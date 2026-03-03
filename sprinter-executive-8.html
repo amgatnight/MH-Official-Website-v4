@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sprinter Executive 8 | Private Sprinters | Montreal Hospitality</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { 'mh-navy': '#0B0F19','mh-gold': '#C5A059','mh-gold-light': '#D6B88A','mh-dark': '#05070A','mh-gray': '#1A1D24' },
+                    fontFamily: { serif: ['"Cormorant Garamond"', 'serif'], sans: ['"Montserrat"', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #0B0F19; color: #ffffff; overflow-x: hidden; font-family: 'Montserrat', sans-serif; }
+        .font-serif { font-family: 'Cormorant Garamond', serif; }
+        .tao-heading { font-family: 'Cormorant Garamond', serif; font-weight: 300; letter-spacing: -0.02em; }
+        .tao-subheading { font-family: 'Montserrat', sans-serif; font-weight: 400; letter-spacing: 0.2em; text-transform: uppercase; }
+        #loader { position: fixed; inset: 0; background: #0B0F19; z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.8s ease; }
+        @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+        .nav-scrolled { background-color: rgba(11,15,25,0.95); backdrop-filter: blur(10px); padding-top: 1.2rem !important; padding-bottom: 1.2rem !important; border-bottom: 1px solid rgba(197,160,89,0.1); }
+        .img-zoom-container { overflow: hidden; }
+        .img-zoom { transition: transform 1.2s cubic-bezier(0.16,1,0.3,1); }
+        .group:hover .img-zoom { transform: scale(1.08); }
+        .link-hover { position: relative; }
+        .link-hover::after { content: ''; position: absolute; width: 0; height: 1px; bottom: -4px; left: 0; background-color: #C5A059; transition: width 0.3s ease; }
+        .link-hover:hover::after { width: 100%; }
+        .btn-hover { position: relative; overflow: hidden; transition: all 0.3s ease; }
+        .btn-hover::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent); transition: left 0.5s ease; }
+        .btn-hover:hover::before { left: 100%; }
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 1s cubic-bezier(0.16,1,0.3,1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        .spec-box { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s ease; }
+        .spec-box:hover { border-color: #C5A059; background: rgba(197,160,89,0.05); }
+        .gallery-item { position: relative; overflow: hidden; cursor: pointer; }
+        .gallery-item img { transition: transform 0.6s ease; }
+        .gallery-item:hover img { transform: scale(1.1); }
+        #lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 9999; display: none; justify-content: center; align-items: center; padding: 2rem; }
+        #lightbox.active { display: flex; }
+        #lightbox img { max-height: 90vh; max-width: 90vw; object-fit: contain; }
+        #lightbox-close { position: absolute; top: 2rem; right: 2rem; color: white; font-size: 2rem; cursor: pointer; z-index: 10000; }
+        .form-input { background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.3); color: white; padding: 12px 0; width: 100%; transition: border-color 0.3s ease; }
+        .form-input:focus { outline: none; border-color: #C5A059; }
+        .form-input::placeholder { color: rgba(255,255,255,0.5); }
+        select.form-input option { background: #05070A; }
+        ::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-track { background: #0B0F19; } ::-webkit-scrollbar-thumb { background: #C5A059; border-radius: 4px; }
+    </style>
+    <base target="_self">
+</head>
+<body class="antialiased selection:bg-mh-gold selection:text-mh-navy">
+
+    <div id="lightbox" onclick="closeLightbox()">
+        <i id="lightbox-close" class="fa-solid fa-times"></i>
+        <img id="lightbox-img" src="" alt="Gallery Image">
+    </div>
+
+    <div id="loader">
+        <div class="text-center">
+            <img src="https://res.cloudinary.com/dg79ri9bl/image/upload/v1769636896/montrealhospitality_qrg2bg.png" alt="Montreal Hospitality" class="h-24 mb-6 animate-pulse object-contain mx-auto">
+            <div class="w-32 h-[1px] bg-mh-gray mx-auto overflow-hidden"><div class="w-full h-full bg-mh-gold" style="animation: shimmer 1.5s infinite;"></div></div>
+        </div>
+    </div>
+
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-500 py-8 px-8 lg:px-16 flex justify-between items-center text-white uppercase text-[11px] tracking-[0.2em] font-medium bg-mh-navy/90 backdrop-blur-md border-b border-white/10">
+        <button id="mobile-menu-btn" class="lg:hidden text-mh-gold z-50 hover:rotate-90 transition-transform duration-300"><i class="fa-solid fa-bars text-xl"></i></button>
+        <a href="index.html" class="absolute left-1/2 transform -translate-x-1/2 lg:static lg:transform-none z-50 group"><img src="https://res.cloudinary.com/dg79ri9bl/image/upload/v1769636896/montrealhospitality_qrg2bg.png" alt="Montreal Hospitality" class="h-12 object-contain"></a>
+        <div class="hidden lg:flex items-center gap-12">
+            <a href="index.html" class="link-hover hover:text-mh-gold transition-colors">Home</a>
+            <a href="venues.html" class="link-hover hover:text-mh-gold transition-colors">Venues</a>
+            <a href="sports.html" class="link-hover hover:text-mh-gold transition-colors">Sports</a>
+            <a href="service.html" class="link-hover text-mh-gold transition-colors">Services</a>
+            <a href="event.html" class="link-hover hover:text-mh-gold transition-colors">Events</a>
+            <a href="index.html#careers" class="link-hover hover:text-mh-gold transition-colors">Careers</a>
+        </div>
+        <div class="hidden lg:flex items-center gap-8"><a href="contact.html" class="btn-hover border border-white/30 px-6 py-2 hover:border-mh-gold hover:text-mh-gold transition-all">Contact</a></div>
+    </nav>
+
+    <div id="mobile-menu" class="fixed inset-0 bg-mh-navy z-40 transform -translate-x-full transition-transform duration-500 flex flex-col justify-center items-center gap-8 lg:hidden">
+        <a href="index.html" class="text-2xl font-serif text-white hover:text-mh-gold mobile-link">Home</a>
+        <a href="venues.html" class="text-2xl font-serif text-white hover:text-mh-gold mobile-link">Venues</a>
+        <a href="sports.html" class="text-2xl font-serif text-white hover:text-mh-gold mobile-link">Sports</a>
+        <a href="service.html" class="text-2xl font-serif text-mh-gold mobile-link">Services</a>
+        <a href="event.html" class="text-2xl font-serif text-white hover:text-mh-gold mobile-link">Events</a>
+        <a href="index.html#careers" class="text-2xl font-serif text-white hover:text-mh-gold mobile-link">Careers</a>
+    </div>
+
+    <header class="relative h-screen w-full overflow-hidden flex items-center justify-center">
+        <div class="absolute inset-0 z-0">
+            <img src="https://res.cloudinary.com/dg79ri9bl/image/upload/v1771545764/IMG_2750_1_isv9up.jpg" alt="Sprinter Executive 8" class="w-full h-full object-cover opacity-50">
+            <div class="absolute inset-0 bg-gradient-to-b from-mh-navy/60 via-mh-navy/40 to-mh-navy"></div>
+        </div>
+        <div class="relative z-10 text-center px-6 max-w-6xl mx-auto pt-20">
+            <span class="tao-subheading text-mh-gold mb-6 tracking-[0.3em] text-xs block reveal">Executive Collection</span>
+            <h1 class="text-5xl md:text-7xl lg:text-8xl tao-heading text-white mb-6 leading-[0.95] reveal">Sprinter Executive 8</h1>
+            <p class="text-gray-400 max-w-2xl mx-auto font-light text-lg mb-10 reveal">Premium group transportation with perimeter seating, premium bar, and entertainment system for larger parties.</p>
+            <div class="reveal">
+                <a href="#inquiry" class="btn-hover inline-flex items-center gap-3 border border-mh-gold text-mh-gold px-10 py-4 text-xs tracking-[0.25em] uppercase hover:bg-mh-gold hover:text-mh-navy transition-all duration-300">Reserve <i class="fa-solid fa-arrow-down"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <section class="py-12 bg-mh-dark border-y border-white/10">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div class="reveal"><span class="text-mh-gold text-xs tracking-widest uppercase block mb-2">Capacity</span><span class="text-white font-serif text-2xl">8 Guests</span></div>
+                <div class="reveal"><span class="text-mh-gold text-xs tracking-widest uppercase block mb-2">Seating</span><span class="text-white font-serif text-2xl">Perimeter</span></div>
+                <div class="reveal"><span class="text-mh-gold text-xs tracking-widest uppercase block mb-2">Bar</span><span class="text-white font-serif text-2xl">Premium</span></div>
+                <div class="reveal"><span class="text-mh-gold text-xs tracking-widest uppercase block mb-2">Entertainment</span><span class="text-white font-serif text-2xl">4K System</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-mh-navy">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="reveal">
+                    <span class="tao-subheading text-mh-gold text-[11px] block mb-4">Interior</span>
+                    <h2 class="text-4xl md:text-5xl tao-heading text-white mb-8">Group Luxury</h2>
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4"><div class="w-12 h-12 rounded-full bg-mh-gold/10 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-users text-mh-gold"></i></div><div><h4 class="text-white font-serif text-xl mb-1">Perimeter Seating</h4><p class="text-gray-500 text-sm">Face-to-face leather seating configuration for socializing and meetings</p></div></div>
+                        <div class="flex items-start gap-4"><div class="w-12 h-12 rounded-full bg-mh-gold/10 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-wine-glass text-mh-gold"></i></div><div><h4 class="text-white font-serif text-xl mb-1">Premium Bar</h4><p class="text-gray-500 text-sm">Built-in bar with refrigerator, glassware, and premium finishes</p></div></div>
+                        <div class="flex items-start gap-4"><div class="w-12 h-12 rounded-full bg-mh-gold/10 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-tv text-mh-gold"></i></div><div><h4 class="text-white font-serif text-xl mb-1">Entertainment System</h4><p class="text-gray-500 text-sm">Multiple 4K displays with Apple TV, streaming, and gaming capabilities</p></div></div>
+                        <div class="flex items-start gap-4"><div class="w-12 h-12 rounded-full bg-mh-gold/10 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-music text-mh-gold"></i></div><div><h4 class="text-white font-serif text-xl mb-1">Premium Audio</h4><p class="text-gray-500 text-sm">Surround sound system with individual zone controls</p></div></div>
+                    </div>
+                </div>
+                <div class="reveal img-zoom-container rounded-sm overflow-hidden">
+                    <img src="https://res.cloudinary.com/dg79ri9bl/image/upload/v1771545764/IMG_2750_1_isv9up.jpg" class="w-full h-[600px] object-cover img-zoom" alt="Sprinter Executive 8 Interior">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="gallery" class="py-24 bg-mh-dark">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 reveal"><span class="tao-subheading text-mh-gold text-[11px] block mb-4">Gallery</span><h2 class="text-4xl md:text-5xl tao-heading text-white">Interior Views</h2></div>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="gallery-item aspect-[4/3] reveal" onclick="openLightbox(this)"><img src="https://res.cloudinary.com/dg79ri9bl/image/upload/v1771545764/IMG_2750_1_isv9up.jpg" class="w-full h-full object-cover" alt="Executive 8 - Interior"></div>
+                <div class="gallery-item aspect-[4/3] reveal" onclick="openLightbox(this)"><img src="https://res.cloudinary.com/dg79ri9bl/image/upload/v1771704044/IMG_2751_ookbqw.jpg" class="w-full h-full object-cover" alt="Executive 8 - Seating"></div>
+                <div class="gallery-item aspect-[4/3] reveal" onclick="openLightbox(this)"><img src="https://res.cloudinary.com/dg79ri9bl/image/upload/v1771703994/IMG_3365_ahfsxz.jpg" class="w-full h-full object-cover" alt="Executive 8 - Exterior"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Inquiry Form -->
+    <section id="inquiry" class="py-24 bg-mh-navy border-t border-white/10">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="text-center mb-16 reveal">
+                <span class="tao-subheading text-mh-gold text-[11px] block mb-4">Reservations</span>
+                <h2 class="text-4xl md:text-5xl tao-heading text-white mb-6">Reserve Your Experience</h2>
+                <p class="text-gray-400 font-light text-lg">Complete the form below and our team will be in touch within 24 hours.</p>
+            </div>
+
+            <div id="form-success" class="hidden text-center py-16">
+                <div class="w-20 h-20 rounded-full bg-mh-gold/10 border border-mh-gold/40 flex items-center justify-center mx-auto mb-8"><i class="fa-solid fa-check text-mh-gold text-3xl"></i></div>
+                <h3 class="text-3xl tao-heading text-white mb-4">Request Received</h3>
+                <p class="text-gray-400 font-light mb-8">Our concierge team will contact you within 24 hours.</p>
+                <div class="inline-block border border-mh-gold/30 bg-mh-gold/5 px-10 py-6">
+                    <span class="tao-subheading text-mh-gold text-[10px] block mb-2 tracking-[0.25em]">Your Reference Number</span>
+                    <span id="ref-number" class="text-3xl font-serif text-white tracking-widest"></span>
+                </div>
+                <p class="text-gray-600 text-xs mt-6 tracking-widest uppercase">Please keep this number for your records</p>
+            </div>
+
+            <form id="sprinter-form" class="space-y-8 reveal" onsubmit="submitSprinterForm(event)">
+                <input type="hidden" name="reference_number" id="hidden-ref">
+                <input type="hidden" name="vehicle" value="Sprinter Executive 8">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div><label class="block text-xs tracking-[0.2em] uppercase text-gray-400 mb-2">First Name</label><input type="text" name="first_name" class="form-input" placeholder="John" required></div>
+                    <div><label class="block text-xs tracking-[0.2em] uppercase text-gray-400 mb-2">Last Name</label><input type="text" name="last_name" class="form-input" placeholder="Doe" required></div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div><label class="block text-xs tracking-[0.2em] uppercase text-gray-400 mb-2">Email</label><input type="email" name="email" class="form-input" placeholder="john@example.com" required></div>
+                    <div><label class="block text-xs tracking-[0.2em] uppercase text-gray-400 mb-2">Phone</label><input type="tel" name="phone" class="form-input" placeholder="514-378-0154" required></div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div><label class="block text-xs tracking-[0.2em] uppercase text-gray-400 mb-2">Pickup Date</label><input type="date" name="pickup_date" class="form-input" required></div>
+                    <div><label class="block text-xs tracking-[0.2em] uppercase text-gray-400 mb-2">Number of Guests</label><input type="number" name="guests" min="1" max="8" class="form-input" placeholder="6" required></div>
+                </div>
+                <div><label class="block text-xs tracking-[0.2em] uppercase text-gray-400 mb-2">Pickup Location</label><input type="text" name="pickup_location" class="form-input" placeholder="Hotel, airport, address..." required></div>
+                <div><label class="block text-xs tracking-[0.2em] uppercase text-gray-400 mb-2">Destination</label><input type="text" name="destination" class="form-input" placeholder="Where are you heading?" required></div>
+                <div><label class="block text-xs tracking-[0.2em] uppercase text-gray-400 mb-2">Special Requests</label><textarea name="special_requests" class="form-input resize-none" rows="4" placeholder="Catering, itinerary stops, accessibility needs, or any other requests..."></textarea></div>
+                <div class="text-center">
+                    <button type="submit" id="submit-btn" class="btn-hover inline-flex items-center gap-3 bg-mh-gold text-mh-navy px-12 py-4 text-xs tracking-[0.25em] uppercase hover:bg-white transition-all duration-300">
+                        Request Booking <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </div>
+                <p id="form-error" class="hidden text-center text-red-400 text-sm tracking-wider">Something went wrong. Please try again or contact us directly.</p>
+            </form>
+        </div>
+    </section>
+
+    <footer class="bg-black text-white pt-24 pb-12 border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-12 mb-20">
+                <div><img src="https://res.cloudinary.com/dg79ri9bl/image/upload/v1769636896/montrealhospitality_qrg2bg.png" alt="Montreal Hospitality" class="h-16 mb-8 object-contain"><p class="text-gray-500 text-sm leading-relaxed font-light">Redefining the art of the night in Montreal.</p></div>
+                <div><h4 class="tao-subheading text-white text-[11px] mb-8 tracking-[0.2em]">Explore</h4><ul class="space-y-4 text-sm text-gray-500 font-light"><li><a href="venues.html" class="hover:text-mh-gold transition-colors">Venues</a></li><li><a href="sports.html" class="hover:text-mh-gold transition-colors">Sports</a></li><li><a href="service.html" class="hover:text-mh-gold transition-colors">Services</a></li></ul></div>
+                <div><h4 class="tao-subheading text-white text-[11px] mb-8 tracking-[0.2em]">Contact</h4><ul class="space-y-4 text-sm text-gray-500 font-light"><li>info@montrealhospitality.com</li><li>514-378-0154</li></ul></div>
+                <div><h4 class="tao-subheading text-white text-[11px] mb-8 tracking-[0.2em]">Follow</h4><div class="flex gap-6"><a href="https://www.instagram.com/montrealhospitality/?hl=en" class="text-gray-500 hover:text-mh-gold transition-colors"><i class="fa-brands fa-instagram text-xl"></i></a></div></div>
+            </div>
+            <div class="border-t border-white/10 pt-8 text-center text-[10px] text-gray-600 uppercase tracking-widest"><p>&copy; 2024 Montreal Hospitality Group</p></div>
+        </div>
+    </footer>
+
+    <script>
+        if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+        window.scrollTo(0, 0);
+        function openLightbox(element) { document.getElementById('lightbox-img').src = element.querySelector('img').src; document.getElementById('lightbox').classList.add('active'); document.body.style.overflow = 'hidden'; }
+        function closeLightbox() { document.getElementById('lightbox').classList.remove('active'); document.body.style.overflow = ''; }
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+        function generateRef() { const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; let ref = 'MH-'; for (let i = 0; i < 8; i++) ref += chars.charAt(Math.floor(Math.random() * chars.length)); return ref; }
+        async function submitSprinterForm(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submit-btn'); const form = document.getElementById('sprinter-form'); const errorMsg = document.getElementById('form-error');
+            const ref = generateRef(); document.getElementById('hidden-ref').value = ref;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...'; btn.disabled = true; errorMsg.classList.add('hidden');
+            try {
+                const response = await fetch('https://formspree.io/f/mykdvnra', { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } });
+                if (response.ok) { document.getElementById('ref-number').textContent = ref; form.classList.add('hidden'); const s = document.getElementById('form-success'); s.classList.remove('hidden'); s.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+                else { throw new Error(); }
+            } catch { errorMsg.classList.remove('hidden'); btn.innerHTML = 'Request Booking <i class="fa-solid fa-paper-plane"></i>'; btn.disabled = false; }
+        }
+        window.addEventListener('load', () => { const loader = document.getElementById('loader'); setTimeout(() => { loader.style.opacity = '0'; setTimeout(() => { loader.style.display = 'none'; document.querySelectorAll('.reveal').forEach(el => el.classList.add('active')); }, 800); }, 1200); });
+        const navbar = document.getElementById('navbar'); window.addEventListener('scroll', () => { navbar.classList.toggle('nav-scrolled', window.scrollY > 50); });
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn'); const mobileMenu = document.getElementById('mobile-menu'); let isMenuOpen = false;
+        function toggleMenu() { isMenuOpen = !isMenuOpen; mobileMenu.classList.toggle('-translate-x-full', !isMenuOpen); mobileMenuBtn.innerHTML = isMenuOpen ? '<i class="fa-solid fa-times text-xl"></i>' : '<i class="fa-solid fa-bars text-xl"></i>'; }
+        mobileMenuBtn.addEventListener('click', toggleMenu); document.querySelectorAll('.mobile-link').forEach(link => link.addEventListener('click', toggleMenu));
+    </script>
+</body>
+</html>

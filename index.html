@@ -1,0 +1,1609 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Montreal Hospitality | Curated Experiences</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'mh-navy': '#0B0F19',
+                        'mh-gold': '#C5A059',
+                        'mh-gold-light': '#D6B88A',
+                        'mh-dark': '#05070A',
+                        'mh-gray': '#1A1D24',
+                        'old-port': '#8B7355',
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'serif'],
+                        sans: ['"Montserrat"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0B0F19;
+            color: #ffffff;
+            overflow-x: hidden;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .font-serif { font-family: 'Cormorant Garamond', serif; }
+
+        .tao-heading {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 300;
+            letter-spacing: -0.02em;
+        }
+
+        .tao-subheading {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 400;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
+        /* Text Entrance Animations - Simplified and Fixed */
+        .hero-animate {
+            opacity: 0;
+            transform: translateY(30px);
+            filter: blur(10px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .hero-animate.visible {
+            opacity: 1;
+            transform: translateY(0);
+            filter: blur(0);
+        }
+
+        /* Stagger delays */
+        .delay-1 { transition-delay: 0.2s; }
+        .delay-2 { transition-delay: 0.6s; }
+        .delay-3 { transition-delay: 1s; }
+        .delay-4 { transition-delay: 1.4s; }
+        .delay-5 { transition-delay: 1.8s; }
+
+        /* Reveal Animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Stagger children animations */
+        .stagger-children > * {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .stagger-children.active > *:nth-child(1) { transition-delay: 0ms; opacity: 1; transform: translateY(0); }
+        .stagger-children.active > *:nth-child(2) { transition-delay: 100ms; opacity: 1; transform: translateY(0); }
+        .stagger-children.active > *:nth-child(3) { transition-delay: 200ms; opacity: 1; transform: translateY(0); }
+        .stagger-children.active > *:nth-child(4) { transition-delay: 300ms; opacity: 1; transform: translateY(0); }
+
+        /* Nav */
+        .nav-scrolled {
+            background-color: rgba(11, 15, 25, 0.95);
+            backdrop-filter: blur(10px);
+            padding-top: 1.2rem !important;
+            padding-bottom: 1.2rem !important;
+            border-bottom: 1px solid rgba(197, 160, 89, 0.1);
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+
+        /* Image Hover Effects */
+        .img-zoom-container { overflow: hidden; }
+        .img-zoom {
+            transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .group:hover .img-zoom {
+            transform: scale(1.08);
+        }
+
+        /* Video zoom effect */
+        .video-zoom {
+            transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.7s ease;
+        }
+        .group:hover .video-zoom {
+            transform: scale(1.08);
+        }
+
+        /* Smooth underline animation */
+        .link-hover {
+            position: relative;
+        }
+        .link-hover::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -4px;
+            left: 0;
+            background-color: #C5A059;
+            transition: width 0.3s ease;
+        }
+        .link-hover:hover::after {
+            width: 100%;
+        }
+
+        /* Button hover animations */
+        .btn-hover {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .btn-hover::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        .btn-hover:hover::before {
+            left: 100%;
+        }
+
+        /* Card hover lift */
+/* Ensure anchor tags with videos are clickable */
+        .card-lift {
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-lift video {
+            pointer-events: none;
+        }
+
+        .card-lift .img-zoom-container {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Ensure the anchor tag captures clicks properly */
+        a.card-lift {
+            display: block;
+            text-decoration: none;
+        }
+        .card-lift {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .card-lift:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        /* Floating animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Pulse glow */
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(197, 160, 89, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(197, 160, 89, 0.6); }
+        }
+        .pulse-glow {
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        /* Gradient text animation */
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #C5A059, #D6B88A, #C5A059);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient-shift 3s ease infinite;
+        }
+
+        /* Loader */
+        #loader {
+            position: fixed;
+            inset: 0;
+            background: #0B0F19;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease;
+        }
+        
+        .loader-line {
+            width: 0;
+            height: 1px;
+            background: #C5A059;
+            animation: load 1.5s ease-in-out forwards;
+        }
+
+        @keyframes load {
+            0% { width: 0; }
+            100% { width: 200px; }
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* Parallax scroll */
+        .parallax-bg {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        /* Icon spin on hover */
+        .icon-spin {
+            transition: transform 0.5s ease;
+        }
+        .group:hover .icon-spin {
+            transform: rotate(360deg);
+        }
+
+        /* Mobile image fixes */
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Line animation */
+        .line-reveal {
+            width: 0;
+            height: 1px;
+            background: #C5A059;
+            margin: 0 auto;
+            transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .line-reveal.visible {
+            width: 60px;
+        }
+
+        /* Cookie Toggle Switch */
+        .cookie-toggle input:checked + span {
+            background-color: #C5A059;
+        }
+        .cookie-toggle input:checked + span .toggle-dot {
+            transform: translateX(24px);
+        }
+        .cookie-toggle input:focus + span {
+            box-shadow: 0 0 0 2px rgba(197, 160, 89, 0.5);
+        }
+        
+        /* Cookie Banner Animation */
+        #cookie-banner.show {
+            transform: translateY(0);
+        }
+        
+        /* Modal Animation */
+        #cookie-modal {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        #cookie-modal.active {
+            opacity: 1;
+        }
+        #cookie-modal > div {
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+        #cookie-modal.active > div {
+            transform: scale(1);
+        }
+    </style>
+<base target="_self">
+<base target="_self">
+<base target="_self">
+<base target="_self">
+<base target="_blank">
+<base target="_blank">
+</head>
+<body class="antialiased selection:bg-mh-gold selection:text-mh-navy">
+
+    <!-- Loader -->
+    <div id="loader">
+        <div class="text-center">
+            <img src="https://res.cloudinary.com/dg79ri9bl/image/upload/v1769636896/montrealhospitality_qrg2bg.png" 
+                 alt="Montreal Hospitality" 
+                 class="h-24 mb-6 animate-pulse object-contain mx-auto">
+            <div class="w-32 h-[1px] bg-mh-gray mx-auto overflow-hidden">
+                <div class="w-full h-full bg-mh-gold" style="animation: shimmer 1.5s infinite;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-500 py-8 px-8 lg:px-16 flex justify-between items-center text-white uppercase text-[11px] tracking-[0.2em] font-medium">
+        <!-- Mobile Menu Button -->
+        <button id="mobile-menu-btn" class="lg:hidden text-mh-gold z-50 hover:rotate-90 transition-transform duration-300">
+            <i class="fa-solid fa-bars text-xl"></i>
+        </button>
+
+        <!-- Logo -->
+        <a href="index.html" class="absolute left-1/2 transform -translate-x-1/2 lg:static lg:transform-none z-50 group">
+            <img src="https://res.cloudinary.com/dg79ri9bl/image/upload/v1769636896/montrealhospitality_qrg2bg.png" 
+                 alt="Montreal Hospitality" 
+                 class="h-12 object-contain">
+        </a>
+
+        <!-- Desktop Links - All open in same tab -->
+        <div class="hidden lg:flex items-center gap-12">
+            <a href="index.html" class="link-hover hover:text-mh-gold transition-colors">Home</a>
+            <a href="venues.html" class="link-hover hover:text-mh-gold transition-colors">Venues</a>
+            <a href="sports.html" class="link-hover hover:text-mh-gold transition-colors">Sports</a>
+            <a href="service.html" class="link-hover hover:text-mh-gold transition-colors">Services</a>
+            <a href="event.html" class="link-hover hover:text-mh-gold transition-colors">Events</a>
+            <a href="#careers" class="link-hover hover:text-mh-gold transition-colors">Careers</a>
+        </div>
+
+        <!-- Right Actions -->
+        <div class="hidden lg:flex items-center gap-8">
+            <a href="https://www.instagram.com/montrealhospitality/?hl=en" class="hover:text-mh-gold transition-colors hover:scale-110 transform duration-300"><i class="fa-brands fa-instagram text-lg"></i></a>
+            <a href="contact.html" class="btn-hover border border-white/30 px-6 py-2 hover:border-mh-gold hover:text-mh-gold transition-all">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu - All open in same tab -->
+    <div id="mobile-menu" class="fixed inset-0 bg-mh-navy z-40 transform -translate-x-full transition-transform duration-500 flex flex-col justify-center items-center gap-8 lg:hidden">
+        <a href="index.html" class="text-2xl font-serif text-white hover:text-mh-gold mobile-link transform hover:translate-x-2 transition-transform">Home</a>
+        <a href="venues.html" class="text-2xl font-serif text-white hover:text-mh-gold mobile-link transform hover:translate-x-2 transition-transform">Venues</a>
+        <a href="sports.html" class="text-2xl font-serif text-white hover:text-mh-gold mobile-link transform hover:translate-x-2 transition-transform">Sports</a>
+        <a href="service.html" class="text-2xl font-serif text-white hover:text-mh-gold mobile-link transform hover:translate-x-2 transition-transform">Services</a>
+        <a href="event.html" class="text-2xl font-serif text-white hover:text-mh-gold mobile-link transform hover:translate-x-2 transition-transform">Events</a>
+        <a href="#careers" class="text-2xl font-serif text-white hover:text-mh-gold mobile-link transform hover:translate-x-2 transition-transform">Careers</a>
+    </div>
+
+    <!-- Hero Section -->
+    <header class="relative h-screen w-full overflow-hidden flex items-center justify-center">
+        <div class="absolute inset-0 z-0">
+            <!-- VIDEO ADDED HERE -->
+            <video autoplay muted loop playsinline 
+                   class="w-full h-full object-cover opacity-40 scale-105">
+                <source src="https://res.cloudinary.com/dg79ri9bl/video/upload/v1770157394/0203_adercp.mp4" type="video/mp4">
+            </video>
+            <!-- END VIDEO -->
+            <div class="absolute inset-0 bg-gradient-to-b from-mh-navy/40 via-mh-navy/20 to-mh-navy"></div>
+        </div>
+
+        <div class="relative z-10 text-center px-6 max-w-6xl mx-auto mt-20">
+            <!-- Animated decorative line -->
+            <div class="line-reveal hero-animate delay-1 mb-8"></div>
+            
+            <!-- Subtitle with fade in -->
+            <p class="tao-subheading text-mh-gold mb-6 hero-animate delay-2 tracking-[0.3em] text-xs md:text-sm">
+                Montreal's Premier Hospitality Group
+            </p>
+            
+            <!-- Main heading with staggered animation -->
+            <h1 class="text-6xl md:text-8xl lg:text-9xl tao-heading text-white mb-2 leading-[0.95] overflow-hidden">
+                <span class="block hero-animate delay-3">
+                    Experience
+                </span>
+            </h1>
+            <h1 class="text-6xl md:text-8xl lg:text-9xl tao-heading text-white mb-8 leading-[0.95] overflow-hidden">
+                <span class="block hero-animate delay-4 italic gradient-text">
+                    The Extraordinary
+                </span>
+            </h1>
+            
+            <!-- CTA Button with fade in - Same tab -->
+            <div class="hero-animate delay-5 mt-12">
+                <a href="venues.html" class="btn-hover inline-block border border-white/40 text-white px-10 py-4 text-xs tracking-[0.25em] uppercase hover:bg-white hover:text-mh-navy transition-all duration-300">
+                    Explore Our Venues
+                </a>
+            </div>
+        </div>
+
+        <!-- Floating scroll indicator -->
+        <div class="absolute bottom-12 left-1/2 transform -translate-x-1/2 animate-bounce text-mh-gold/50 opacity-0 scroll-indicator">
+            <i class="fa-solid fa-chevron-down text-sm"></i>
+        </div>
+
+        <style>
+            .scroll-indicator {
+                animation: bounce 2s infinite, fadeIn 1s ease forwards;
+                animation-delay: 2.5s;
+            }
+            @keyframes fadeIn {
+                to { opacity: 1; }
+            }
+            @keyframes bounce {
+                0%, 100% { transform: translateX(-50%) translateY(0); }
+                50% { transform: translateX(-50%) translateY(-10px); }
+            }
+        </style>
+    </header>
+
+    <!-- Intro Statement -->
+    <section class="py-32 bg-mh-navy text-center px-6">
+        <div class="max-w-4xl mx-auto reveal">
+            <p class="tao-heading text-3xl md:text-5xl text-white/90 leading-tight font-light">
+                We create immersive dining and nightlife experiences that define the standard of luxury in Montreal.
+            </p>
+        </div>
+    </section>
+
+    <!-- Venues Grid -->
+    <section id="venues" class="bg-mh-dark pb-32">
+        <div class="max-w-[95%] mx-auto">
+            <div class="text-center mb-20 reveal">
+                <span class="tao-subheading text-mh-gold text-[11px] block mb-4">Our Portfolio</span>
+                <h2 class="text-5xl md:text-7xl tao-heading text-white">Signature Venues</h2>
+            </div>
+
+            <!-- Venue 1: Large (Yoko Luna) - VIDEO ON HOVER -->
+            <a href="yoko luna.html" class="group relative mb-6 h-[70vh] overflow-hidden block reveal card-lift" id="yoko-luna-card">
+                <div class="img-zoom-container w-full h-full relative">
+                    <!-- Static Image (default state) -->
+                    <img src="https://res.cloudinary.com/dg79ri9bl/image/upload/v1769638377/473706203_18053071472498519_2657822319212069239_n_vf5i6r.jpg" 
+                         class="img-zoom w-full h-full object-cover absolute inset-0 transition-opacity duration-700 z-10" style="pointer-events: none;" 
+                         id="yoko-luna-img"
+                         alt="Yoko Luna">
+                    
+                    <!-- Video (plays on hover) -->
+                    <video class="video-zoom w-full h-full object-cover absolute inset-0 opacity-0 z-20" style="pointer-events: none;" 
+                           id="yoko-luna-video"
+                           muted 
+                           loop 
+                           playsinline
+                           preload="metadata">
+                        <source src="https://res.cloudinary.com/dg79ri9bl/video/upload/v1769654198/2b61f2f6-132a-42a0-b43a-0425bebe4209_axphcz.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-all duration-700 z-30"></div>
+                <div class="absolute bottom-0 left-0 p-10 md:p-16 w-full bg-gradient-to-t from-black/80 to-transparent z-30">
+                    <span class="tao-subheading text-mh-gold text-[10px] mb-2 block">Indoor • Downtown Montreal</span>
+                    <h3 class="text-5xl md:text-7xl tao-heading text-white mb-4 group-hover:translate-x-2 transition-transform duration-500">Yoko Luna</h3>
+                    <p class="text-white/70 max-w-md font-light opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">
+                        Panoramic views of the city skyline paired with world-class mixology.
+                    </p>
+                </div>
+            </a>
+
+            <!-- Venue 2 & 3: Split -->
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Venue 2: Hang Bar - VIDEO ON HOVER -->
+                <a href="hang bar.html" class="group relative h-[60vh] overflow-hidden block reveal card-lift" id="hang-bar-card">
+                    <div class="img-zoom-container w-full h-full relative">
+                        <!-- Static Image (default state) -->
+                        <img src="https://res.cloudinary.com/dg79ri9bl/image/upload/v1769647795/HangBarNYE_k69lgr.jpg" 
+                             class="img-zoom w-full h-full object-cover absolute inset-0 transition-opacity duration-700 z-10" style="pointer-events: none;" 
+                             id="hang-bar-img"
+                             alt="Hang Bar">
+                        
+                        <!-- Video (plays on hover) -->
+                        <video class="video-zoom w-full h-full object-cover absolute inset-0 opacity-0 z-20" style="pointer-events: none;" 
+                               id="hang-bar-video"
+                               muted 
+                               loop 
+                               playsinline
+                               preload="metadata">
+                            <source src="https://res.cloudinary.com/dg79ri9bl/video/upload/v1769658353/c987b8db-2509-441f-b998-9dce6df608bb_bvk9fu.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-all duration-700 z-30"></div>
+                    <div class="absolute bottom-0 left-0 p-10 w-full bg-gradient-to-t from-black/80 to-transparent z-30">
+                        <span class="tao-subheading text-mh-gold text-[10px] mb-2 block">Bar • Downtown</span>
+                        <h3 class="text-4xl md:text-5xl tao-heading text-white group-hover:translate-x-2 transition-transform duration-500">Hang Bar</h3>
+                    </div>
+                </a>
+
+                <!-- Venue 3: Bord'Elle - VIDEO ON HOVER -->
+                <a href="bordelle.html" class="group relative h-[60vh] overflow-hidden block reveal card-lift" id="bordelle-card" style="transition-delay: 100ms;">
+                    <div class="img-zoom-container w-full h-full relative">
+                        <!-- Static Image (default state) -->
+                        <img src="https://res.cloudinary.com/dg79ri9bl/image/upload/v1769637448/Corporate_rdyrdn.jpg" 
+                             class="img-zoom w-full h-full object-cover absolute inset-0 transition-opacity duration-700 z-10" style="pointer-events: none;" 
+                             id="bordelle-img"
+                             alt="Bord'Elle">
+                        
+                        <!-- Video (plays on hover) -->
+                        <video class="video-zoom w-full h-full object-cover absolute inset-0 opacity-0 z-20" style="pointer-events: none;" 
+                               id="bordelle-video"
+                               muted 
+                               loop 
+                               playsinline
+                               preload="metadata">
+                            <source src="https://res.cloudinary.com/dg79ri9bl/video/upload/v1769659792/5427bb65-f931-4b5d-a599-6298f073ec9e_ybiaqj.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-all duration-700 z-30"></div>
+                    <div class="absolute bottom-0 left-0 p-10 w-full bg-gradient-to-t from-black/80 to-transparent z-30">
+                        <span class="tao-subheading text-mh-gold text-[10px] mb-2 block">Supper Club • Old Port</span>
+                        <h3 class="text-4xl md:text-5xl tao-heading text-white group-hover:translate-x-2 transition-transform duration-500">Bord'Elle</h3>
+                    </div>
+                </a>
+            </div>
+
+            <!-- View More Button - Same tab -->
+            <div class="text-center mt-16 reveal">
+                <a href="venues.html" class="btn-hover inline-flex items-center gap-3 border border-mh-gold text-mh-gold px-10 py-4 text-xs tracking-[0.25em] uppercase hover:bg-mh-gold hover:text-mh-navy transition-all duration-300">
+                    View more
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- SPORTS EVENTS SECTION -->
+    <section id="sports-events" class="py-32 bg-mh-dark relative overflow-hidden">
+        <!-- Dynamic background lines -->
+        <div class="absolute inset-0 opacity-5">
+            <div class="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-mh-gold to-transparent"></div>
+            <div class="absolute top-0 right-1/3 w-px h-full bg-gradient-to-b from-transparent via-mh-gold to-transparent"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="text-center mb-20 reveal">
+                <span class="tao-subheading text-mh-gold text-[11px] block mb-4">Premium Access</span>
+                <h2 class="text-5xl md:text-7xl tao-heading text-white mb-6">Sports & Entertainment</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto font-light text-lg">
+                    Experience Montreal's most electrifying sporting events from the best seats in the house. VIP boxes, private suites, and exclusive after-parties.
+                </p>
+            </div>
+
+            <!-- Featured Events Grid -->
+            <div class="grid md:grid-cols-3 gap-8 mb-20 stagger-children">
+                <!-- F1 Grand Prix - LINKED TO INQUIRE.HTML -->
+                <a href="contact.html" class="group relative h-[500px] overflow-hidden cursor-pointer card-lift reveal block">
+                    <div class="img-zoom-container w-full h-full">
+                        <img src="https://res.cloudinary.com/dg79ri9bl/image/upload/v1771118518/grand-prix-du-canada-circuit-gilles-villeneuve-parc-jean-drapeau-montreal-1920x700_fgiayg.jpg" 
+                             class="img-zoom w-full h-full object-cover" alt="F1 Grand Prix">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-mh-navy via-mh-navy/50 to-transparent z-10"></div>
+                    <div class="absolute top-6 left-6 z-20">
+                        <span class="bg-mh-gold text-mh-navy text-[10px] font-bold uppercase tracking-widest px-3 py-1">May 2026</span>
+                    </div>
+                    <div class="absolute bottom-0 left-0 p-8 z-20 w-full">
+                        <div class="flex items-center gap-2 mb-3">
+                            <i class="fa-solid fa-flag-checkered text-mh-gold"></i>
+                            <span class="text-mh-gold text-[10px] tracking-[0.2em] uppercase">Formula 1</span>
+                        </div>
+                        <h3 class="text-3xl tao-heading text-white mb-3 group-hover:text-mh-gold transition-colors">Grand Prix Weekend</h3>
+                        <p class="text-gray-400 text-sm font-light mb-6 leading-relaxed">
+                            Paddock Club access, luxury suite hospitality, and exclusive after-parties at our venues. The ultimate F1 experience in Montreal.
+                        </p>
+                        <div class="flex items-center gap-4">
+                            <span class="text-xs text-gray-500 border border-white/20 px-3 py-1">VIP Suites</span>
+                            <span class="text-xs text-gray-500 border border-white/20 px-3 py-1">After Parties</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Canadiens Hockey - LINKED TO INQUIRE.HTML -->
+                <a href="contact.html" class="group relative h-[500px] overflow-hidden cursor-pointer card-lift reveal block" style="transition-delay: 100ms;">
+                    <div class="img-zoom-container w-full h-full">
+                        <img src="https://res.cloudinary.com/dg79ri9bl/image/upload/v1771118434/The_Bell_Centre_GettyImages-99160467_tkvkyr.webp" 
+                             class="img-zoom w-full h-full object-cover" alt="Hockey Game">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-mh-navy via-mh-navy/50 to-transparent z-10"></div>
+                    <div class="absolute top-6 left-6 z-20">
+                        <span class="bg-white/10 backdrop-blur-sm text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 border border-white/20">Season</span>
+                    </div>
+                    <div class="absolute bottom-0 left-0 p-8 z-20 w-full">
+                        <div class="flex items-center gap-2 mb-3">
+                            <i class="fa-solid fa-hockey-puck text-mh-gold"></i>
+                            <span class="text-mh-gold text-[10px] tracking-[0.2em] uppercase">NHL</span>
+                        </div>
+                        <h3 class="text-3xl tao-heading text-white mb-3 group-hover:text-mh-gold transition-colors">Canadiens VIP</h3>
+                        <p class="text-gray-400 text-sm font-light mb-6 leading-relaxed">
+                            Bell Centre private suites with premium catering, dedicated service, and post-game access to our downtown venues.
+                        </p>
+                        <div class="flex items-center gap-4">
+                            <span class="text-xs text-gray-500 border border-white/20 px-3 py-1">Private Box</span>
+                            <span class="text-xs text-gray-500 border border-white/20 px-3 py-1">Catering</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Soccer/Other Events -->
+                <a href="sports.html" class="group relative h-[500px] overflow-hidden cursor-pointer card-lift reveal block" style="transition-delay: 200ms;">
+                    <div class="img-zoom-container w-full h-full">
+                        <img src="https://res.cloudinary.com/dg79ri9bl/image/upload/v1771118357/saputo-stadium_ox8uzr.jpg" 
+                             class="img-zoom w-full h-full object-cover" alt="Soccer Stadium">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-mh-navy via-mh-navy/50 to-transparent z-10"></div>
+                    <div class="absolute top-6 left-6 z-20">
+                        <span class="bg-white/10 backdrop-blur-sm text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 border border-white/20">Year Round</span>
+                    </div>
+                    <div class="absolute bottom-0 left-0 p-8 z-20 w-full">
+                        <div class="flex items-center gap-2 mb-3">
+                            <i class="fa-solid fa-futbol text-mh-gold"></i>
+                            <span class="text-mh-gold text-[10px] tracking-[0.2em] uppercase">MLS & More</span>
+                        </div>
+                        <h3 class="text-3xl tao-heading text-white mb-3 group-hover:text-mh-gold transition-colors">CF Montréal & Events</h3>
+                        <p class="text-gray-400 text-sm font-light mb-6 leading-relaxed">
+                            From Saputo Stadium to the Rogers Cup, secure premium seating and hospitality packages for Montreal's top sporting events.
+                        </p>
+                        <div class="flex items-center gap-4">
+                            <span class="text-xs text-gray-500 border border-white/20 px-3 py-1">Premium Seats</span>
+                            <span class="text-xs text-gray-500 border border-white/20 px-3 py-1">Hospitality</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Sports Packages -->
+            <div class="bg-mh-navy/50 border border-white/10 p-10 md:p-16 reveal">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <span class="tao-subheading text-mh-gold text-[11px] block mb-4">Packages</span>
+                        <h3 class="text-4xl tao-heading text-white mb-6">The Ultimate Sports Experience</h3>
+                        <p class="text-gray-400 font-light leading-relaxed mb-8">
+                            Combine premium sporting tickets with our hospitality venues for an unforgettable day. Pre-game dining, VIP transportation, and exclusive after-parties.
+                        </p>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-start gap-4 group">
+                                <div class="w-10 h-10 rounded-full bg-mh-gold/10 flex items-center justify-center flex-shrink-0 group-hover:bg-mh-gold/20 transition-colors">
+                                    <i class="fa-solid fa-ticket text-mh-gold text-sm"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-white font-serif text-lg mb-1">Premium Tickets</h4>
+                                    <p class="text-gray-500 text-sm">Best seats, VIP access, meet & greets</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4 group">
+                                <div class="w-10 h-10 rounded-full bg-mh-gold/10 flex items-center justify-center flex-shrink-0 group-hover:bg-mh-gold/20 transition-colors">
+                                    <i class="fa-solid fa-car text-mh-gold text-sm"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-white font-serif text-lg mb-1">Luxury Transport</h4>
+                                    <p class="text-gray-500 text-sm">Chauffeured vehicles to and from venues</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4 group">
+                                <div class="w-10 h-10 rounded-full bg-mh-gold/10 flex items-center justify-center flex-shrink-0 group-hover:bg-mh-gold/20 transition-colors">
+                                    <i class="fa-solid fa-glass-cheers text-mh-gold text-sm"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-white font-serif text-lg mb-1">Post-Game Parties</h4>
+                                    <p class="text-gray-500 text-sm">Exclusive access to our venues after the event</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <img src="https://res.cloudinary.com/dg79ri9bl/image/upload/v1771192360/photo-1759503407074-2cc8538e6d66_c1mgdt.avif" 
+                             class="w-full h-96 object-cover rounded-sm" alt="Sports VIP Experience">
+                        <div class="absolute -bottom-6 -left-6 bg-mh-gold text-mh-navy p-6 rounded-sm">
+                            <p class="text-3xl font-serif font-bold">2026</p>
+                            <p class="text-xs uppercase tracking-widest">F1 Packages<br>Now Available</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA - Same tab -->
+            <div class="text-center mt-16 reveal">
+                <a href="inquire.html" class="btn-hover inline-block border border-mh-gold text-mh-gold px-10 py-4 text-xs tracking-[0.25em] uppercase hover:bg-mh-gold hover:text-mh-navy transition-all duration-300">
+                    Inquire About Sports Packages
+                </a>
+            </div>
+        </div>
+    </section>
+
+<!-- Luxury Service -->
+<section id="hospitality" class="py-32 bg-mh-dark border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-20 reveal">
+            <div>
+                <span class="tao-subheading text-mh-gold text-[11px] block mb-4">Service</span>
+                <h2 class="text-5xl md:text-6xl tao-heading text-white">Beyond the Venue</h2>
+            </div>
+            <p class="text-gray-400 max-w-sm mt-6 md:mt-0 font-light text-right">
+                Complete your evening with our curated selection of luxury transport and accommodation.
+            </p>
+        </div>
+
+        <div class="grid md:grid-cols-5 gap-6 stagger-children">
+            <!-- Car -->
+            <a href="exotic fleet.html" class="group cursor-pointer card-lift reveal block">
+                <div class="img-zoom-container h-80 mb-6 overflow-hidden rounded-sm relative">
+                    <img src="https://res.cloudinary.com/dg79ri9bl/image/upload/v1771195296/unnamed_ggvp6h.png" 
+                         class="img-zoom w-full h-full object-cover" alt="Car">
+                    <div class="absolute inset-0 bg-gradient-to-t from-mh-navy to-transparent opacity-0 group-hover:opacity-60 transition-opacity"></div>
+                    <div class="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">
+                        <span class="text-white text-xs tracking-widest uppercase">View Fleet</span>
+                    </div>
+                </div>
+                <h3 class="text-2xl tao-heading text-white mb-2 group-hover:text-mh-gold transition-colors">Exotic Fleet</h3>
+                <p class="text-gray-500 text-sm font-light">Rolls-Royce, Lamborghini, and more.</p>
+            </a>
+
+            <!-- Jet -->
+            <a href="private jet.html" class="group cursor-pointer card-lift reveal block">
+                <div class="img-zoom-container h-80 mb-6 overflow-hidden rounded-sm">
+                    <img src="https://res.cloudinary.com/dg79ri9bl/image/upload/v1771788701/LJ45_exterior_pvuyrs.webp" 
+                         class="img-zoom w-full h-full object-cover" alt="Jet">
+                    <div class="absolute inset-0 bg-gradient-to-t from-mh-navy to-transparent opacity-0 group-hover:opacity-60 transition-opacity"></div>
+                    <div class="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">
+                        <span class="text-white text-xs tracking-widest uppercase">Charter Now</span>
+                    </div>
+                </div>
+                <h3 class="text-2xl tao-heading text-white mb-2 group-hover:text-mh-gold transition-colors">Private Aviation</h3>
+                <p class="text-gray-500 text-sm font-light">Direct access to YUL airport.</p>
+            </a>
+
+            <!-- Yacht -->
+            <a href="yatch.html" class="group cursor-pointer card-lift reveal block">
+                <div class="img-zoom-container h-80 mb-6 overflow-hidden rounded-sm">
+                    <img src="https://res.cloudinary.com/dg79ri9bl/image/upload/v1771811751/49-1_toghli.jpg" 
+                         class="img-zoom w-full h-full object-cover" alt="Yacht">
+                    <div class="absolute inset-0 bg-gradient-to-t from-mh-navy to-transparent opacity-0 group-hover:opacity-60 transition-opacity"></div>
+                    <div class="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">
+                        <span class="text-white text-xs tracking-widest uppercase">Set Sail</span>
+                    </div>
+                </div>
+                <h3 class="text-2xl tao-heading text-white mb-2 group-hover:text-mh-gold transition-colors">Yacht Charters</h3>
+                <p class="text-gray-500 text-sm font-light">St. Lawrence River cruises.</p>
+            </a>
+
+            <!-- Private Sprinter (REPLACED RESIDENCES) -->
+            <a href="private sprinters.html" class="group cursor-pointer card-lift reveal block">
+                <div class="img-zoom-container h-80 mb-6 overflow-hidden rounded-sm">
+                    <img src="https://res.cloudinary.com/dg79ri9bl/image/upload/v1771378035/IMG_2750_r9xfx9.jpg" 
+                         class="img-zoom w-full h-full object-cover" alt="Private Sprinter">
+                    <div class="absolute inset-0 bg-gradient-to-t from-mh-navy to-transparent opacity-0 group-hover:opacity-60 transition-opacity"></div>
+                    <div class="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">
+                        <span class="text-white text-xs tracking-widest uppercase">Book Transport</span>
+                    </div>
+                </div>
+                <h3 class="text-2xl tao-heading text-white mb-2 group-hover:text-mh-gold transition-colors">Private Sprinter</h3>
+                <p class="text-gray-500 text-sm font-light">Luxury group transport.</p>
+            </a>
+
+            <!-- Party Buses (NEW) -->
+            <a href="limousine.html" class="group cursor-pointer card-lift reveal block">
+                <div class="img-zoom-container h-80 mb-6 overflow-hidden rounded-sm">
+                    <img src="https://res.cloudinary.com/dg79ri9bl/image/upload/v1772239946/IMG_5062_2_bcplaw.jpg" 
+                         class="img-zoom w-full h-full object-cover" alt="Party Bus">
+                    <div class="absolute inset-0 bg-gradient-to-t from-mh-navy to-transparent opacity-0 group-hover:opacity-60 transition-opacity"></div>
+                    <div class="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">
+                        <span class="text-white text-xs tracking-widest uppercase">Reserve Now</span>
+                    </div>
+                </div>
+                <h3 class="text-2xl tao-heading text-white mb-2 group-hover:text-mh-gold transition-colors">Limousine Service</h3>
+                <p class="text-gray-500 text-sm font-light">Mobile celebration venue.</p>
+            </a>
+        </div>
+    </div>
+</section>
+
+    <!-- Private Events -->
+    <section id="private-events" class="py-32 bg-mh-navy relative overflow-hidden">
+        <!-- Animated gradient orb -->
+        <div class="absolute top-1/2 left-0 w-96 h-96 bg-mh-gold/10 rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2 animate-pulse"></div>
+        
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-20 items-center">
+                <div class="order-2 lg:order-1 reveal">
+                    <span class="tao-subheading text-mh-gold text-[11px] block mb-4">Private Events</span>
+                    <h2 class="text-5xl md:text-6xl tao-heading text-white mb-8">Host With Us</h2>
+                    <p class="text-gray-400 font-light leading-loose mb-10 text-lg">
+                        From corporate gatherings to milestone celebrations, our dedicated events team ensures every detail is flawless. Exclusive buyouts available.
+                    </p>
+                    
+                    <div class="space-y-4 mb-10">
+                        <div class="flex items-center gap-4 text-gray-300 group">
+                            <div class="w-8 h-8 rounded-full border border-mh-gold/30 flex items-center justify-center group-hover:bg-mh-gold group-hover:border-mh-gold transition-all">
+                                <i class="fa-solid fa-check text-xs text-mh-gold group-hover:text-mh-navy"></i>
+                            </div>
+                            <span class="font-light">Dedicated event coordinator</span>
+                        </div>
+                        <div class="flex items-center gap-4 text-gray-300 group">
+                            <div class="w-8 h-8 rounded-full border border-mh-gold/30 flex items-center justify-center group-hover:bg-mh-gold group-hover:border-mh-gold transition-all">
+                                <i class="fa-solid fa-check text-xs text-mh-gold group-hover:text-mh-navy"></i>
+                            </div>
+                            <span class="font-light">Custom menu curation</span>
+                        </div>
+                        <div class="flex items-center gap-4 text-gray-300 group">
+                            <div class="w-8 h-8 rounded-full border border-mh-gold/30 flex items-center justify-center group-hover:bg-mh-gold group-hover:border-mh-gold transition-all">
+                                <i class="fa-solid fa-check text-xs text-mh-gold group-hover:text-mh-navy"></i>
+                            </div>
+                            <span class="font-light">AV & entertainment production</span>
+                        </div>
+                    </div>
+                    
+                    <a href="event.html" class="btn-hover inline-block border-b-2 border-mh-gold text-mh-gold pb-2 text-sm tracking-widest uppercase hover:text-white hover:border-white transition-all">
+                        Start Planning
+                    </a>
+                </div>
+                <div class="order-1 lg:order-2 reveal">
+                    <div class="grid grid-cols-2 gap-4">
+                        <img src="https://res.cloudinary.com/dg79ri9bl/image/upload/v1771188064/468592051_18311895265165925_5700969317094141740_n_dccuuz.jpg" 
+                             class="w-full h-72 object-cover rounded-sm transform hover:scale-105 transition-transform duration-500" alt="Event">
+                        <img src="https://res.cloudinary.com/dg79ri9bl/image/upload/v1771188449/IMG_3262_abqadk.jpg" 
+                             class="w-full h-72 object-cover rounded-sm mt-8 transform hover:scale-105 transition-transform duration-500" alt="Event">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Careers Section -->
+    <section id="careers" class="py-32 bg-mh-dark relative overflow-hidden">
+        <!-- Subtle diagonal lines -->
+        <div class="absolute inset-0 opacity-5">
+            <div class="absolute top-0 left-0 w-full h-full" style="background: repeating-linear-gradient(45deg, transparent, transparent 100px, rgba(197, 160, 89, 0.1) 100px, rgba(197, 160, 89, 0.1) 101px);"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-20 items-center">
+                <div class="reveal">
+                    <span class="tao-subheading text-mh-gold text-[11px] block mb-4">Join Our Team</span>
+                    <h2 class="text-5xl md:text-6xl tao-heading text-white mb-8">Careers</h2>
+                    <p class="text-gray-400 font-light leading-loose mb-10 text-lg">
+                        Be part of Montreal's most prestigious hospitality group. We're always looking for passionate individuals who share our commitment to excellence.
+                    </p>
+
+                    <!-- Job Openings -->
+                    <div class="space-y-6 mb-10">
+                        <div class="group bg-mh-navy/50 border border-white/10 p-6 hover:border-mh-gold/50 transition-all cursor-pointer">
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="text-white font-serif text-xl group-hover:text-mh-gold transition-colors">Marketer</h4>
+                                <span class="text-mh-gold text-[10px] tracking-widest uppercase">Full-time/Part-time</span>
+                            </div>
+                            <p class="text-gray-500 text-sm font-light mb-3">Montreal Hospitality • Montreal</p>
+                            <div class="flex items-center gap-2 text-mh-gold text-xs">
+                                <span>View Details</span>
+                                <i class="fa-solid fa-arrow-right transform group-hover:translate-x-1 transition-transform"></i>
+                            </div>
+                        </div>
+
+                        <div class="group bg-mh-navy/50 border border-white/10 p-6 hover:border-mh-gold/50 transition-all cursor-pointer">
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="text-white font-serif text-xl group-hover:text-mh-gold transition-colors">Event Coordinator</h4>
+                                <span class="text-mh-gold text-[10px] tracking-widest uppercase">Full-time</span>
+                            </div>
+                            <p class="text-gray-500 text-sm font-light mb-3">Montreal Hospitality • Montreal</p>
+                            <div class="flex items-center gap-2 text-mh-gold text-xs">
+                                <span>View Details</span>
+                                <i class="fa-solid fa-arrow-right transform group-hover:translate-x-1 transition-transform"></i>
+                            </div>
+                        </div>
+
+                        <div class="group bg-mh-navy/50 border border-white/10 p-6 hover:border-mh-gold/50 transition-all cursor-pointer">
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="text-white font-serif text-xl group-hover:text-mh-gold transition-colors">VIP Host</h4>
+                                <span class="text-mh-gold text-[10px] tracking-widest uppercase">Part-time</span>
+                            </div>
+                            <p class="text-gray-500 text-sm font-light mb-3">Montreal Hospitality • Montreal</p>
+                            <div class="flex items-center gap-2 text-mh-gold text-xs">
+                                <span>View Details</span>
+                                <i class="fa-solid fa-arrow-right transform group-hover:translate-x-1 transition-transform"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="mailto:info@montrealhospitality.com" class="btn-hover inline-flex items-center gap-3 border border-mh-gold text-mh-gold px-8 py-4 text-xs tracking-[0.25em] uppercase hover:bg-mh-gold hover:text-mh-navy transition-all duration-300">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        Send Your Resume
+                    </a>
+                </div>
+
+                <div class="reveal">
+                    <div class="relative">
+                        <img src="https://res.cloudinary.com/dg79ri9bl/image/upload/v1771377681/photo-1630395822970-acd6a691d97e_eizwnc.avif" 
+                             class="w-full h-[500px] object-cover rounded-sm" alt="Bartender at work">
+                        <div class="absolute -bottom-6 -right-6 bg-mh-gold text-mh-navy p-8 rounded-sm">
+                            <p class="text-4xl font-serif font-bold">5+</p>
+                            <p class="text-xs uppercase tracking-widest">Years of<br>Excellence</p>
+                        </div>
+                    </div>
+
+                    <!-- Benefits -->
+                    <div class="mt-16 grid grid-cols-2 gap-6">
+                        <div class="text-center p-4 border border-white/10 rounded-sm">
+                            <i class="fa-solid fa-gem text-mh-gold text-2xl mb-3"></i>
+                            <h4 class="text-white text-sm mb-1">Competitive Pay</h4>
+                            <p class="text-gray-500 text-xs">Above industry standard</p>
+                        </div>
+                        <div class="text-center p-4 border border-white/10 rounded-sm">
+                            <i class="fa-solid fa-calendar-check text-mh-gold text-2xl mb-3"></i>
+                            <h4 class="text-white text-sm mb-1">Flexible Schedule</h4>
+                            <p class="text-gray-500 text-xs">Work-life balance</p>
+                        </div>
+                        <div class="text-center p-4 border border-white/10 rounded-sm">
+                            <i class="fa-solid fa-graduation-cap text-mh-gold text-2xl mb-3"></i>
+                            <h4 class="text-white text-sm mb-1">Training</h4>
+                            <p class="text-gray-500 text-xs">Professional development</p>
+                        </div>
+                        <div class="text-center p-4 border border-white/10 rounded-sm">
+                            <i class="fa-solid fa-users text-mh-gold text-2xl mb-3"></i>
+                            <h4 class="text-white text-sm mb-1">Team Events</h4>
+                            <p class="text-gray-500 text-xs">Regular staff gatherings</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="py-20 bg-mh-gold text-mh-navy relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23000000\' fill-opacity=\'1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+        <div class="max-w-4xl mx-auto px-6 text-center relative z-10 reveal">
+            <h2 class="text-3xl md:text-4xl font-serif mb-4">Join the Inner Circle</h2>
+            <p class="mb-8 font-light">Subscribe for exclusive event invitations, guestlist privileges, and cocktail recipes.</p>
+            <form class="flex flex-col md:flex-row gap-4 justify-center max-w-lg mx-auto" onsubmit="event.preventDefault(); alert('Thank you for subscribing!');">
+                <input type="email" placeholder="Your Email Address" class="flex-1 bg-transparent border-b-2 border-mh-navy py-3 px-2 placeholder-mh-navy/60 focus:outline-none focus:border-white transition-colors">
+                <button type="submit" class="btn-hover bg-mh-navy text-mh-gold px-8 py-3 uppercase tracking-widest text-xs font-bold hover:bg-black transition-colors">
+                    Subscribe
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="bg-black text-white pt-24 pb-12 border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-12 mb-20">
+                <div class="col-span-1 md:col-span-1">
+                    <img src="https://res.cloudinary.com/dg79ri9bl/image/upload/v1769636896/montrealhospitality_qrg2bg.png" 
+                         alt="Montreal Hospitality" 
+                         class="h-16 mb-8 object-contain">
+                    <p class="text-gray-500 text-sm leading-relaxed font-light">
+                        Redefining the art of the night in Montreal.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="tao-subheading text-white text-[11px] mb-8 tracking-[0.2em]">Explore</h4>
+                    <ul class="space-y-4 text-sm text-gray-500 font-light">
+                        <li><a href="venues.html" class="hover:text-mh-gold transition-colors hover:translate-x-1 inline-block transform">Venues</a></li>
+                        <li><a href="sports.html" class="hover:text-mh-gold transition-colors hover:translate-x-1 inline-block transform">Sports</a></li>
+                        <li><a href="service.html" class="hover:text-mh-gold transition-colors hover:translate-x-1 inline-block transform">Service</a></li>
+                        <li><a href="#careers" class="hover:text-mh-gold transition-colors hover:translate-x-1 inline-block transform">Careers</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="tao-subheading text-white text-[11px] mb-8 tracking-[0.2em]">Contact</h4>
+                    <ul class="space-y-4 text-sm text-gray-500 font-light">
+                        <li><a href="mailto:info@montrealhospitality.com" class="hover:text-mh-gold transition-colors">info@montrealhospitality.com</a></li>
+                        <li>514-378-0154</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="tao-subheading text-white text-[11px] mb-8 tracking-[0.2em]">Follow</h4>
+                    <div class="flex gap-6">
+                        <a href="https://www.instagram.com/montrealhospitality/?hl=en" class="text-gray-500 hover:text-mh-gold transition-colors hover:scale-110 transform"><i class="fa-brands fa-instagram text-xl"></i></a>
+                        <a href="#" class="text-gray-500 hover:text-mh-gold transition-colors hover:scale-110 transform"><i class="fa-brands fa-facebook-f text-xl"></i></a>
+                        <a href="#" class="text-gray-500 hover:text-mh-gold transition-colors hover:scale-110 transform"><i class="fa-brands fa-tiktok text-xl"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-[10px] text-gray-600 uppercase tracking-widest">
+                <p>&copy; 2024 Montreal Hospitality Group</p>
+                <div class="flex gap-8 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-white transition-colors">Privacy</a>
+                    <a href="#" class="hover:text-white transition-colors">Terms</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cookie Consent Banner -->
+    <div id="cookie-banner" class="fixed bottom-0 left-0 right-0 bg-mh-navy/95 backdrop-blur-lg border-t border-mh-gold/20 z-[9999] transform translate-y-full transition-transform duration-500">
+        <div class="max-w-7xl mx-auto px-6 py-6">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="flex-1">
+                    <div class="flex items-center gap-3 mb-2">
+                        <i class="fa-solid fa-cookie-bite text-mh-gold text-lg"></i>
+                        <h3 class="text-white font-serif text-lg">Cookie Preferences</h3>
+                    </div>
+                    <p class="text-gray-400 text-sm font-light leading-relaxed">
+                        We use cookies to enhance your browsing experience, serve personalized content, and analyze our traffic. 
+                        By clicking "Accept All", you consent to our use of cookies. 
+                        <a href="#" class="text-mh-gold hover:underline ml-1">Learn more</a>
+                    </p>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <button id="cookie-settings-btn" class="btn-hover px-6 py-3 border border-white/30 text-white text-xs tracking-[0.2em] uppercase hover:border-mh-gold hover:text-mh-gold transition-all duration-300">
+                        Settings
+                    </button>
+                    <button id="cookie-reject-btn" class="btn-hover px-6 py-3 border border-white/30 text-white text-xs tracking-[0.2em] uppercase hover:border-mh-gold hover:text-mh-gold transition-all duration-300">
+                        Reject All
+                    </button>
+                    <button id="cookie-accept-btn" class="btn-hover px-8 py-3 bg-mh-gold text-mh-navy text-xs tracking-[0.2em] uppercase font-bold hover:bg-mh-gold-light transition-all duration-300 pulse-glow">
+                        Accept All
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cookie Settings Modal -->
+    <div id="cookie-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[10000] hidden items-center justify-center p-4">
+        <div class="bg-mh-navy border border-mh-gold/30 max-w-2xl w-full max-h-[90vh] overflow-y-auto rounded-sm">
+            <div class="p-8 border-b border-white/10">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-2xl font-serif text-white">Cookie Settings</h2>
+                    <button id="close-cookie-modal" class="text-gray-400 hover:text-white transition-colors">
+                        <i class="fa-solid fa-times text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="p-8 space-y-6">
+                <!-- Necessary Cookies -->
+                <div class="flex items-start justify-between gap-4 pb-6 border-b border-white/10">
+                    <div class="flex-1">
+                        <div class="flex items-center gap-3 mb-2">
+                            <i class="fa-solid fa-shield-alt text-mh-gold"></i>
+                            <h3 class="text-white font-serif text-lg">Necessary</h3>
+                            <span class="bg-mh-gold/20 text-mh-gold text-[10px] px-2 py-1 uppercase tracking-wider">Required</span>
+                        </div>
+                        <p class="text-gray-500 text-sm font-light">
+                            Essential cookies that enable basic functionality and security features of the website. These cannot be disabled.
+                        </p>
+                    </div>
+                    <div class="relative">
+                        <input type="checkbox" checked disabled class="w-5 h-5 accent-mh-gold cursor-not-allowed opacity-50">
+                    </div>
+                </div>
+
+                <!-- Analytics Cookies -->
+                <div class="flex items-start justify-between gap-4 pb-6 border-b border-white/10">
+                    <div class="flex-1">
+                        <div class="flex items-center gap-3 mb-2">
+                            <i class="fa-solid fa-chart-line text-mh-gold"></i>
+                            <h3 class="text-white font-serif text-lg">Analytics</h3>
+                        </div>
+                        <p class="text-gray-500 text-sm font-light">
+                            Help us understand how visitors interact with our website by collecting and reporting information anonymously.
+                        </p>
+                    </div>
+                    <div class="relative">
+                        <label class="cookie-toggle">
+                            <input type="checkbox" id="analytics-cookies" class="sr-only">
+                            <span class="block w-12 h-6 bg-gray-700 rounded-full cursor-pointer transition-colors duration-300 relative">
+                                <span class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 toggle-dot"></span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Marketing Cookies -->
+                <div class="flex items-start justify-between gap-4 pb-6 border-b border-white/10">
+                    <div class="flex-1">
+                        <div class="flex items-center gap-3 mb-2">
+                            <i class="fa-solid fa-bullhorn text-mh-gold"></i>
+                            <h3 class="text-white font-serif text-lg">Marketing</h3>
+                        </div>
+                        <p class="text-gray-500 text-sm font-light">
+                            Used to track visitors across websites to display relevant and engaging advertisements.
+                        </p>
+                    </div>
+                    <div class="relative">
+                        <label class="cookie-toggle">
+                            <input type="checkbox" id="marketing-cookies" class="sr-only">
+                            <span class="block w-12 h-6 bg-gray-700 rounded-full cursor-pointer transition-colors duration-300 relative">
+                                <span class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 toggle-dot"></span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Preferences Cookies -->
+                <div class="flex items-start justify-between gap-4">
+                    <div class="flex-1">
+                        <div class="flex items-center gap-3 mb-2">
+                            <i class="fa-solid fa-sliders-h text-mh-gold"></i>
+                            <h3 class="text-white font-serif text-lg">Preferences</h3>
+                        </div>
+                        <p class="text-gray-500 text-sm font-light">
+                            Allow the website to remember choices you make (such as your preferred language or region).
+                        </p>
+                    </div>
+                    <div class="relative">
+                        <label class="cookie-toggle">
+                            <input type="checkbox" id="preferences-cookies" class="sr-only">
+                            <span class="block w-12 h-6 bg-gray-700 rounded-full cursor-pointer transition-colors duration-300 relative">
+                                <span class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 toggle-dot"></span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-8 border-t border-white/10 bg-mh-dark/50">
+                <div class="flex flex-col sm:flex-row gap-4 justify-end">
+                    <button id="save-cookie-preferences" class="btn-hover px-8 py-3 bg-mh-gold text-mh-navy text-xs tracking-[0.2em] uppercase font-bold hover:bg-mh-gold-light transition-all duration-300">
+                        Save Preferences
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Prevent browser from restoring scroll position on refresh
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+
+        // Scroll to top immediately on load (before showing content)
+        window.scrollTo(0, 0);
+
+        // Loader and Hero Animation Trigger
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader');
+            
+            // Hide loader after 1.2s
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                    
+                    // Trigger hero animations after loader is gone
+                    const heroElements = document.querySelectorAll('.hero-animate');
+                    heroElements.forEach(el => {
+                        el.classList.add('visible');
+                    });
+                    
+                    // Trigger line animation
+                    const line = document.querySelector('.line-reveal');
+                    if (line) line.classList.add('visible');
+                    
+                }, 800);
+            }, 1200);
+        });
+
+        // Navbar Scroll Effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('nav-scrolled');
+            } else {
+                navbar.classList.remove('nav-scrolled');
+            }
+        });
+
+        // Scroll Reveal Animation
+        const revealElements = document.querySelectorAll('.reveal');
+        const staggerContainers = document.querySelectorAll('.stagger-children');
+        
+        const revealOnScroll = () => {
+            const windowHeight = window.innerHeight;
+            const elementVisible = 100;
+
+            revealElements.forEach((reveal) => {
+                const elementTop = reveal.getBoundingClientRect().top;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveal.classList.add('active');
+                }
+            });
+
+            staggerContainers.forEach((container) => {
+                const elementTop = container.getBoundingClientRect().top;
+                if (elementTop < windowHeight - elementVisible) {
+                    container.classList.add('active');
+                }
+            });
+        };
+
+        window.addEventListener('scroll', revealOnScroll);
+        revealOnScroll();
+
+        // Mobile Menu
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+        let isMenuOpen = false;
+
+        function toggleMenu() {
+            isMenuOpen = !isMenuOpen;
+            if (isMenuOpen) {
+                mobileMenu.classList.remove('-translate-x-full');
+                mobileMenuBtn.innerHTML = '<i class="fa-solid fa-times text-xl"></i>';
+            } else {
+                mobileMenu.classList.add('-translate-x-full');
+                mobileMenuBtn.innerHTML = '<i class="fa-solid fa-bars text-xl"></i>';
+            }
+        }
+
+        mobileMenuBtn.addEventListener('click', toggleMenu);
+        
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', toggleMenu);
+        });
+
+        // Smooth scroll for anchor links (exclude external pages)
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                // Only handle internal anchors
+                if (href.startsWith('#')) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }
+            });
+        });
+
+        // Video Hover Effects Function
+        function setupVideoHover(cardId, imgId, videoId) {
+            const card = document.getElementById(cardId);
+            const img = document.getElementById(imgId);
+            const video = document.getElementById(videoId);
+
+            if (card && video && img) {
+                card.addEventListener('mouseenter', () => {
+                    // Fade out image, fade in video
+                    img.classList.add('opacity-0');
+                    video.classList.remove('opacity-0');
+                    video.classList.add('opacity-100');
+                    
+                    // Play video
+                    video.play().catch(e => console.log('Video play failed:', e));
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    // Fade out video, fade in image
+                    video.classList.remove('opacity-100');
+                    video.classList.add('opacity-0');
+                    img.classList.remove('opacity-0');
+                    
+                    // Pause and reset video
+                    video.pause();
+                    video.currentTime = 0;
+                });
+            }
+        }
+
+        // Setup all video cards
+        setupVideoHover('yoko-luna-card', 'yoko-luna-img', 'yoko-luna-video');
+        setupVideoHover('hang-bar-card', 'hang-bar-img', 'hang-bar-video');
+        setupVideoHover('bordelle-card', 'bordelle-img', 'bordelle-video');
+
+        // Cookie Consent Management - FIXED VERSION
+        (function() {
+            'use strict';
+            
+            // Cookie utility functions with proper encoding
+            const CookieUtil = {
+                set: function(name, value, days) {
+                    let expires = '';
+                    if (days) {
+                        const date = new Date();
+                        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                        expires = '; expires=' + date.toUTCString();
+                    }
+                    // Use proper cookie formatting
+                    const cookieValue = encodeURIComponent(JSON.stringify(value));
+                    document.cookie = name + '=' + cookieValue + expires + '; path=/; SameSite=Lax; Secure';
+                },
+                
+                get: function(name) {
+                    const nameEQ = name + '=';
+                    const ca = document.cookie.split(';');
+                    for (let i = 0; i < ca.length; i++) {
+                        let c = ca[i].trim();
+                        if (c.indexOf(nameEQ) === 0) {
+                            try {
+                                const cookieValue = c.substring(nameEQ.length, c.length);
+                                return JSON.parse(decodeURIComponent(cookieValue));
+                            } catch (e) {
+                                console.error('Error parsing cookie:', e);
+                                return null;
+                            }
+                        }
+                    }
+                    return null;
+                },
+                
+                exists: function(name) {
+                    return document.cookie.split(';').some(c => c.trim().startsWith(name + '='));
+                },
+                
+                remove: function(name) {
+                    document.cookie = name + '=; Max-Age=-99999999; path=/; SameSite=Lax; Secure';
+                }
+            };
+            
+            // Cookie consent manager
+            const CookieConsent = {
+                banner: document.getElementById('cookie-banner'),
+                modal: document.getElementById('cookie-modal'),
+                initialized: false,
+                
+                init: function() {
+                    if (this.initialized) return;
+                    this.initialized = true;
+                    
+                    // Check consent immediately on init
+                    this.checkConsent();
+                    this.bindEvents();
+                },
+                
+                checkConsent: function() {
+                    // Check if cookie_consent exists
+                    const hasConsent = CookieUtil.exists('cookie_consent');
+                    const consent = CookieUtil.get('cookie_consent');
+                    
+                    console.log('Checking consent:', { hasConsent, consent });
+                    
+                    // Only show banner if no consent cookie exists at all
+                    if (!hasConsent || !consent) {
+                        console.log('No consent found, showing banner in 2 seconds...');
+                        // Show banner after a short delay
+                        setTimeout(() => {
+                            this.showBanner();
+                        }, 2000);
+                    } else {
+                        console.log('Consent found, hiding banner. Consent:', consent);
+                        // Apply existing consent settings
+                        this.applyConsent(consent);
+                        // Ensure banner stays hidden
+                        this.hideBanner();
+                    }
+                },
+                
+                showBanner: function() {
+                    if (this.banner) {
+                        this.banner.classList.add('show');
+                        console.log('Banner shown');
+                    }
+                },
+                
+                hideBanner: function() {
+                    if (this.banner) {
+                        this.banner.classList.remove('show');
+                        console.log('Banner hidden');
+                    }
+                },
+                
+                showModal: function() {
+                    if (this.modal) {
+                        this.modal.classList.remove('hidden');
+                        this.modal.classList.add('flex');
+                        // Trigger reflow
+                        void this.modal.offsetWidth;
+                        this.modal.classList.add('active');
+                        document.body.style.overflow = 'hidden';
+                    }
+                },
+                
+                hideModal: function() {
+                    if (this.modal) {
+                        this.modal.classList.remove('active');
+                        setTimeout(() => {
+                            this.modal.classList.add('hidden');
+                            this.modal.classList.remove('flex');
+                            document.body.style.overflow = '';
+                        }, 300);
+                    }
+                },
+                
+                bindEvents: function() {
+                    const acceptBtn = document.getElementById('cookie-accept-btn');
+                    const rejectBtn = document.getElementById('cookie-reject-btn');
+                    const settingsBtn = document.getElementById('cookie-settings-btn');
+                    const closeModalBtn = document.getElementById('close-cookie-modal');
+                    const savePreferencesBtn = document.getElementById('save-cookie-preferences');
+                    
+                    // Accept all cookies
+                    if (acceptBtn) {
+                        acceptBtn.addEventListener('click', () => {
+                            console.log('Accept All clicked');
+                            const consent = {
+                                necessary: true,
+                                analytics: true,
+                                marketing: true,
+                                preferences: true,
+                                timestamp: new Date().toISOString(),
+                                source: 'accept_all'
+                            };
+                            
+                            // Save cookie with 365 days expiration
+                            CookieUtil.set('cookie_consent', consent, 365);
+                            console.log('Consent saved:', consent);
+                            
+                            // Apply and hide
+                            this.applyConsent(consent);
+                            this.hideBanner();
+                        });
+                    }
+                    
+                    // Reject all (except necessary)
+                    if (rejectBtn) {
+                        rejectBtn.addEventListener('click', () => {
+                            console.log('Reject All clicked');
+                            const consent = {
+                                necessary: true,
+                                analytics: false,
+                                marketing: false,
+                                preferences: false,
+                                timestamp: new Date().toISOString(),
+                                source: 'reject_all'
+                            };
+                            
+                            CookieUtil.set('cookie_consent', consent, 365);
+                            console.log('Consent saved:', consent);
+                            
+                            this.applyConsent(consent);
+                            this.hideBanner();
+                        });
+                    }
+                    
+                    // Open settings modal
+                    if (settingsBtn) {
+                        settingsBtn.addEventListener('click', () => {
+                            this.loadPreferences();
+                            this.showModal();
+                        });
+                    }
+                    
+                    // Close modal
+                    if (closeModalBtn) {
+                        closeModalBtn.addEventListener('click', () => {
+                            this.hideModal();
+                        });
+                    }
+                    
+                    // Save preferences
+                    if (savePreferencesBtn) {
+                        savePreferencesBtn.addEventListener('click', () => {
+                            console.log('Save Preferences clicked');
+                            const analyticsChecked = document.getElementById('analytics-cookies')?.checked || false;
+                            const marketingChecked = document.getElementById('marketing-cookies')?.checked || false;
+                            const preferencesChecked = document.getElementById('preferences-cookies')?.checked || false;
+                            
+                            const consent = {
+                                necessary: true,
+                                analytics: analyticsChecked,
+                                marketing: marketingChecked,
+                                preferences: preferencesChecked,
+                                timestamp: new Date().toISOString(),
+                                source: 'custom_settings'
+                            };
+                            
+                            CookieUtil.set('cookie_consent', consent, 365);
+                            console.log('Consent saved:', consent);
+                            
+                            this.applyConsent(consent);
+                            this.hideModal();
+                            this.hideBanner();
+                        });
+                    }
+                    
+                    // Close modal on backdrop click
+                    if (this.modal) {
+                        this.modal.addEventListener('click', (e) => {
+                            if (e.target === this.modal) {
+                                this.hideModal();
+                            }
+                        });
+                    }
+                },
+                
+                loadPreferences: function() {
+                    const consent = CookieUtil.get('cookie_consent');
+                    if (consent) {
+                        const analyticsEl = document.getElementById('analytics-cookies');
+                        const marketingEl = document.getElementById('marketing-cookies');
+                        const preferencesEl = document.getElementById('preferences-cookies');
+                        
+                        if (analyticsEl) analyticsEl.checked = consent.analytics || false;
+                        if (marketingEl) marketingEl.checked = consent.marketing || false;
+                        if (preferencesEl) preferencesEl.checked = consent.preferences || false;
+                    }
+                },
+                
+                applyConsent: function(consent) {
+                    console.log('Applying consent:', consent);
+                    
+                    // Apply analytics if enabled
+                    if (consent.analytics) {
+                        this.enableAnalytics();
+                    } else {
+                        this.disableAnalytics();
+                    }
+                    
+                    // Apply marketing if enabled
+                    if (consent.marketing) {
+                        this.enableMarketing();
+                    } else {
+                        this.disableMarketing();
+                    }
+                    
+                    // Dispatch custom event for other scripts
+                    window.dispatchEvent(new CustomEvent('cookieConsentUpdated', { detail: consent }));
+                },
+                
+                enableAnalytics: function() {
+                    if (window.gtag) {
+                        window.gtag('consent', 'update', {
+                            'analytics_storage': 'granted'
+                        });
+                    }
+                    document.documentElement.setAttribute('data-analytics-enabled', 'true');
+                },
+                
+                disableAnalytics: function() {
+                    if (window.gtag) {
+                        window.gtag('consent', 'update', {
+                            'analytics_storage': 'denied'
+                        });
+                    }
+                    document.documentElement.setAttribute('data-analytics-enabled', 'false');
+                },
+                
+                enableMarketing: function() {
+                    if (window.gtag) {
+                        window.gtag('consent', 'update', {
+                            'ad_storage': 'granted',
+                            'personalization_storage': 'granted'
+                        });
+                    }
+                    document.documentElement.setAttribute('data-marketing-enabled', 'true');
+                },
+                
+                disableMarketing: function() {
+                    if (window.gtag) {
+                        window.gtag('consent', 'update', {
+                            'ad_storage': 'denied',
+                            'personalization_storage': 'denied'
+                        });
+                    }
+                    document.documentElement.setAttribute('data-marketing-enabled', 'false');
+                }
+            };
+            
+            // Initialize when DOM is ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', () => CookieConsent.init());
+            } else {
+                // DOM already loaded
+                CookieConsent.init();
+            }
+            
+            // Expose to global scope for debugging
+            window.CookieConsent = CookieConsent;
+            window.CookieUtil = CookieUtil;
+        })();
+    </script>
+</body>
+</html>

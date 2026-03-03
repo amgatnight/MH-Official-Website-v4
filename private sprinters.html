@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Private Sprinters | Service | Montreal Hospitality</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'mh-navy': '#0B0F19',
+                        'mh-gold': '#C5A059',
+                        'mh-gold-light': '#D6B88A',
+                        'mh-dark': '#05070A',
+                        'mh-gray': '#1A1D24',
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'serif'],
+                        sans: ['"Montserrat"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0B0F19;
+            color: #ffffff;
+            overflow-x: hidden;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .font-serif { font-family: 'Cormorant Garamond', serif; }
+
+        .tao-heading {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 300;
+            letter-spacing: -0.02em;
+        }
+
+        .tao-subheading {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 400;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
+        #loader {
+            position: fixed;
+            inset: 0;
+            background: #0B0F19;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .nav-scrolled {
+            background-color: rgba(11, 15, 25, 0.95);
+            backdrop-filter: blur(10px);
+            padding-top: 1.2rem !important;
+            padding-bottom: 1.2rem !important;
+            border-bottom: 1px solid rgba(197, 160, 89, 0.1);
+        }
+
+        .img-zoom-container { overflow: hidden; }
+        .img-zoom {
+            transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .group:hover .img-zoom {
+            transform: scale(1.08);
+        }
+
+        .link-hover { position: relative; }
+        .link-hover::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -4px;
+            left: 0;
+            background-color: #C5A059;
+            transition: width 0.3s ease;
+        }
+        .link-hover:hover::after { width: 100%; }
+
+        .btn-hover {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .btn-hover::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        .btn-hover:hover::before { left: 100%; }
+
+        .card-lift {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .card-lift:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .stagger-children > * {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .stagger-children.active > *:nth-child(1) { transition-delay: 0ms; opacity: 1; transform: translateY(0); }
+        .stagger-children.active > *:nth-child(2) { transition-delay: 100ms; opacity: 1; transform: translateY(0); }
+        .stagger-children.active > *:nth-child(3) { transition-delay: 200ms; opacity: 1; transform: translateY(0); }
+        .stagger-children.active > *:nth-child(4) { transition-delay: 300ms; opacity: 1; transform: translateY(0); }
+
+        .vehicle-overlay {
+            background: linear-gradient(to top, rgba(11, 15, 25, 0.95) 0%, rgba(11, 15, 25, 0.6) 50%, transparent 100%);
+        }
+
+        .spec-box {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+        }
+        .spec-box:hover {
+            border-color: #C5A059;
+            background: rgba(197, 160, 89, 0.05);
+        }
+
+        /* Clickable card */
+        a.sprinter-card-link {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+        }
+        .sprinter-click-hint {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        a.sprinter-card-link:hover .sprinter-click-hint {
+            opacity: 1;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0B0F19; }
+        ::-webkit-scrollbar-thumb { background: #C5A059; border-radius: 4px; }
+    </style>
+</head>
+<body class="antialiased selection:bg-mh-gold selection:text-mh-navy">
+
+    <!-- Loader -->
+    <div id="loader">
+        <div class="text-center">
+            <img src="https://res.cloudinary.com/dg79ri9bl/image/upload/v1769636896/montrealhospitality_qrg2bg.png" 
+                 alt="Montreal Hospitality" 
+                 class="h-24 mb-6 animate-pulse object-contain mx-auto">
+            <div class="w-32 h-[1px] bg-mh-gray mx-auto overflow-hidden">
+                <div class="w-full h-full bg-mh-gold" style="animation: shimmer 1.5s infinite;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-500 py-8 px-8 lg:px-16 flex justify-between items-center text-white uppercase text-[11px] tracking-[0.2em] font-medium bg-mh-navy/90 backdrop-blur-md border-b border-white/10">
+        <button id="mobile-menu-btn" class="lg:hidden text-mh-gold z-50 hover:rotate-90 transition-transform duration-300">
+            <i class="fa-solid fa-bars text-xl"></i>
+        </button>
+        <a href="index.html" target="_self" class="absolute left-1/2 transform -translate-x-1/2 lg:static lg:transform-none z-50 group">
+            <img src="https://res.cloudinary.com/dg79ri9bl/image/upload/v1769636896/montrealhospitality_qrg2bg.png" alt="Montreal Hospitality" class="h-12 object-contain">
+        </a>
+        <div class="hidden lg:flex items-center gap-12">
+            <a href="index.html" target="_self" class="link-hover hover:text-mh-gold transition-colors">Home</a>
+            <a href="venues.html" target="_self" class="link-hover hover:text-mh-gold transition-colors">Venues</a>
+            <a href="sports.html" target="_self" class="link-hover hover:text-mh-gold transition-colors">Sports</a>
+            <a href="service.html" target="_self" class="link-hover text-mh-gold transition-colors">Services</a>
+            <a href="event.html" target="_self" class="link-hover hover:text-mh-gold transition-colors">Events</a>
+            <a href="index.html#careers" target="_self" class="link-hover hover:text-mh-gold transition-colors">Careers</a>
+        </div>
+        <div class="hidden lg:flex items-center gap-8">
+            <a href="contact.html" class="btn-hover border border-white/30 px-6 py-2 hover:border-mh-gold hover:text-mh-gold transition-all">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed inset-0 bg-mh-navy z-40 transform -translate-x-full transition-transform duration-500 flex flex-col justify-center items-center gap-8 lg:hidden">
+        <a href="index.html" target="_self" class="text-2xl font-serif text-white hover:text-mh-gold mobile-link transform hover:translate-x-2 transition-transform">Home</a>
+        <a href="venues.html" target="_self" class="text-2xl font-serif text-white hover:text-mh-gold mobile-link transform hover:translate-x-2 transition-transform">Venues</a>
+        <a href="sports.html" target="_self" class="text-2xl font-serif text-white hover:text-mh-gold mobile-link transform hover:translate-x-2 transition-transform">Sports</a>
+        <a href="service.html" target="_self" class="text-2xl font-serif text-mh-gold mobile-link transform hover:translate-x-2 transition-transform">Services</a>
+        <a href="event.html" target="_self" class="text-2xl font-serif text-white hover:text-mh-gold mobile-link transform hover:translate-x-2 transition-transform">Events</a>
+        <a href="index.html#careers" target="_self" class="text-2xl font-serif text-white hover:text-mh-gold mobile-link transform hover:translate-x-2 transition-transform">Careers</a>
+    </div>
+
+    <!-- Hero Section -->
+    <header class="relative h-[70vh] w-full overflow-hidden flex items-center justify-center">
+        <div class="absolute inset-0 z-0">
+            <img src="https://res.cloudinary.com/dg79ri9bl/image/upload/v1771546015/IMG_1183_ie86fz.jpg" alt="Luxury Sprinter Van" class="w-full h-full object-cover opacity-40">
+            <div class="absolute inset-0 bg-gradient-to-b from-mh-navy/60 via-mh-navy/40 to-mh-navy"></div>
+        </div>
+        <div class="relative z-10 text-center px-6 max-w-6xl mx-auto pt-20">
+            <p class="tao-subheading text-mh-gold mb-6 tracking-[0.3em] text-xs md:text-sm reveal">Concierge Service</p>
+            <h1 class="text-5xl md:text-7xl lg:text-8xl tao-heading text-white mb-6 leading-[0.95] reveal">Private Sprinters</h1>
+            <p class="text-gray-400 max-w-2xl mx-auto font-light text-lg mb-10 reveal">
+                Executive transportation redefined. Mercedes-Benz Sprinter vans transformed into mobile sanctuaries of luxury, productivity, and comfort.
+            </p>
+            <div class="reveal">
+                <a href="#fleet" class="btn-hover inline-flex items-center gap-3 bg-mh-gold text-mh-navy px-10 py-4 text-xs tracking-[0.25em] uppercase hover:bg-white transition-all duration-300">
+                    View Fleet <i class="fa-solid fa-arrow-down"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Fleet Section -->
+    <section id="fleet" class="py-24 bg-mh-dark">
+        <div class="max-w-[95%] mx-auto px-6">
+            <div class="text-center mb-20 reveal">
+                <span class="tao-subheading text-mh-gold text-[11px] block mb-4">Our Collection</span>
+                <h2 class="text-4xl md:text-6xl tao-heading text-white">Executive Fleet</h2>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 stagger-children">
+
+                <!-- Sprinter Executive 6 -->
+                <a href="sprinter-executive-6.html" target="_self" class="sprinter-card-link group relative h-[600px] overflow-hidden reveal card-lift">
+                    <div class="img-zoom-container w-full h-full relative">
+                        <img src="https://res.cloudinary.com/dg79ri9bl/image/upload/v1771545763/IMG_1186_1_hqo4q4.jpg" 
+                             class="img-zoom w-full h-full object-cover" 
+                             alt="Presidential Sprinter">
+                    </div>
+                    <div class="absolute inset-0 vehicle-overlay z-10"></div>
+
+                    <!-- Hover hint -->
+                    <div class="sprinter-click-hint absolute top-5 right-5 z-30 bg-mh-gold/90 text-mh-navy px-4 py-2 text-xs tracking-widest uppercase flex items-center gap-2">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i> View
+                    </div>
+
+                    <div class="absolute bottom-0 left-0 p-8 w-full z-20">
+                        <span class="tao-subheading text-mh-gold text-[10px] tracking-[0.2em] uppercase block mb-2">Flagship</span>
+                        <h3 class="text-4xl font-serif text-white mb-3">Sprinter Executive 6</h3>
+                        <p class="text-white/70 font-light mb-6">
+                            The pinnacle of executive transportation. Maybach-style seating, private lavatory, full galley, and boardroom capabilities.
+                        </p>
+                        <div class="flex flex-wrap gap-4 mb-6">
+                            <div class="spec-box px-4 py-2">
+                                <span class="text-mh-gold text-xs block">Capacity</span>
+                                <span class="text-white font-serif text-sm">6 Guests</span>
+                            </div>
+                            <div class="spec-box px-4 py-2">
+                                <span class="text-mh-gold text-xs block">Interior</span>
+                                <span class="text-white font-serif text-sm">6'4" Height</span>
+                            </div>
+                            <div class="spec-box px-4 py-2">
+                                <span class="text-mh-gold text-xs block">Range</span>
+                                <span class="text-white font-serif text-sm">500+ Miles</span>
+                            </div>
+                        </div>
+                        <span class="inline-flex items-center gap-2 text-mh-gold text-xs tracking-widest uppercase">
+                            Inquire <i class="fa-solid fa-arrow-right"></i>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Sprinter Executive 8 -->
+                <a href="sprinter-executive-8.html" target="_self" class="sprinter-card-link group relative h-[600px] overflow-hidden reveal card-lift">
+                    <div class="img-zoom-container w-full h-full relative">
+                        <img src="https://res.cloudinary.com/dg79ri9bl/image/upload/v1771545764/IMG_2750_1_isv9up.jpg" 
+                             class="img-zoom w-full h-full object-cover" 
+                             alt="Executive Limo Van">
+                    </div>
+                    <div class="absolute inset-0 vehicle-overlay z-10"></div>
+
+                    <div class="sprinter-click-hint absolute top-5 right-5 z-30 bg-mh-gold/90 text-mh-navy px-4 py-2 text-xs tracking-widest uppercase flex items-center gap-2">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i> View
+                    </div>
+
+                    <div class="absolute bottom-0 left-0 p-8 w-full z-20">
+                        <span class="tao-subheading text-mh-gold text-[10px] tracking-[0.2em] uppercase block mb-2">Executive</span>
+                        <h3 class="text-4xl font-serif text-white mb-3">Sprinter Executive 8</h3>
+                        <p class="text-white/70 font-light mb-6">
+                            Premium group transportation with perimeter seating, premium bar, and entertainment system for larger parties.
+                        </p>
+                        <div class="flex flex-wrap gap-4 mb-6">
+                            <div class="spec-box px-4 py-2">
+                                <span class="text-mh-gold text-xs block">Capacity</span>
+                                <span class="text-white font-serif text-sm">8 Guests</span>
+                            </div>
+                            <div class="spec-box px-4 py-2">
+                                <span class="text-mh-gold text-xs block">Seating</span>
+                                <span class="text-white font-serif text-sm">Perimeter</span>
+                            </div>
+                            <div class="spec-box px-4 py-2">
+                                <span class="text-mh-gold text-xs block">Features</span>
+                                <span class="text-white font-serif text-sm">Premium Bar</span>
+                            </div>
+                        </div>
+                        <span class="inline-flex items-center gap-2 text-mh-gold text-xs tracking-widest uppercase">
+                            Inquire <i class="fa-solid fa-arrow-right"></i>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Sprinter Signature -->
+                <a href="sprinter-signature.html" target="_self" class="sprinter-card-link group relative h-[600px] overflow-hidden reveal card-lift">
+                    <div class="img-zoom-container w-full h-full relative">
+                        <img src="https://res.cloudinary.com/dg79ri9bl/image/upload/v1771545764/IMG_2749_mjs6ve.jpg" 
+                             class="img-zoom w-full h-full object-cover" 
+                             alt="Mobile Office">
+                    </div>
+                    <div class="absolute inset-0 vehicle-overlay z-10"></div>
+
+                    <div class="sprinter-click-hint absolute top-5 right-5 z-30 bg-mh-gold/90 text-mh-navy px-4 py-2 text-xs tracking-widest uppercase flex items-center gap-2">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i> View
+                    </div>
+
+                    <div class="absolute bottom-0 left-0 p-8 w-full z-20">
+                        <span class="tao-subheading text-mh-gold text-[10px] tracking-[0.2em] uppercase block mb-2">Mobile Office</span>
+                        <h3 class="text-4xl font-serif text-white mb-3">Sprinter Signature</h3>
+                        <p class="text-white/70 font-light mb-6">
+                            Designed for productivity on the move. Individual workstations, video conferencing, and secure communications.
+                        </p>
+                        <div class="flex flex-wrap gap-4 mb-6">
+                            <div class="spec-box px-4 py-2">
+                                <span class="text-mh-gold text-xs block">Capacity</span>
+                                <span class="text-white font-serif text-sm">6 Guests</span>
+                            </div>
+                            <div class="spec-box px-4 py-2">
+                                <span class="text-mh-gold text-xs block">Workstations</span>
+                                <span class="text-white font-serif text-sm">4 Desks</span>
+                            </div>
+                            <div class="spec-box px-4 py-2">
+                                <span class="text-mh-gold text-xs block">Tech</span>
+                                <span class="text-white font-serif text-sm">Video Conf</span>
+                            </div>
+                        </div>
+                        <span class="inline-flex items-center gap-2 text-mh-gold text-xs tracking-widest uppercase">
+                            Inquire <i class="fa-solid fa-arrow-right"></i>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Sprinter Grande -->
+                <a href="sprinter-grande.html" target="_self" class="sprinter-card-link group relative h-[600px] overflow-hidden reveal card-lift">
+                    <div class="img-zoom-container w-full h-full relative">
+                        <img src="https://res.cloudinary.com/dg79ri9bl/image/upload/v1771704615/interior_900_avi80d.jpg" 
+                             class="img-zoom w-full h-full object-cover" 
+                             alt="Family Cruiser">
+                    </div>
+                    <div class="absolute inset-0 vehicle-overlay z-10"></div>
+
+                    <div class="sprinter-click-hint absolute top-5 right-5 z-30 bg-mh-gold/90 text-mh-navy px-4 py-2 text-xs tracking-widest uppercase flex items-center gap-2">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i> View
+                    </div>
+
+                    <div class="absolute bottom-0 left-0 p-8 w-full z-20">
+                        <span class="tao-subheading text-mh-gold text-[10px] tracking-[0.2em] uppercase block mb-2">Family</span>
+                        <h3 class="text-4xl font-serif text-white mb-3">Sprinter Grande</h3>
+                        <p class="text-white/70 font-light mb-6">
+                            Versatile luxury for family travel. Reclining seats, entertainment system, and ample luggage space.
+                        </p>
+                        <div class="flex flex-wrap gap-4 mb-6">
+                            <div class="spec-box px-4 py-2">
+                                <span class="text-mh-gold text-xs block">Capacity</span>
+                                <span class="text-white font-serif text-sm">10 Guests</span>
+                            </div>
+                            <div class="spec-box px-4 py-2">
+                                <span class="text-mh-gold text-xs block">Seating</span>
+                                <span class="text-white font-serif text-sm">Reclining</span>
+                            </div>
+                            <div class="spec-box px-4 py-2">
+                                <span class="text-mh-gold text-xs block">Storage</span>
+                                <span class="text-white font-serif text-sm">Extended</span>
+                            </div>
+                        </div>
+                        <span class="inline-flex items-center gap-2 text-mh-gold text-xs tracking-widest uppercase">
+                            Inquire <i class="fa-solid fa-arrow-right"></i>
+                        </span>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Interior Features -->
+    <section class="py-24 bg-mh-navy relative overflow-hidden">
+        <div class="absolute inset-0 opacity-5">
+            <div class="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-mh-gold to-transparent"></div>
+            <div class="absolute top-0 right-1/3 w-px h-full bg-gradient-to-b from-transparent via-mh-gold to-transparent"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="reveal">
+                    <span class="tao-subheading text-mh-gold text-[11px] block mb-4">Interior Design</span>
+                    <h2 class="text-4xl md:text-5xl tao-heading text-white mb-8">Mobile Sanctuary</h2>
+                    <p class="text-gray-400 font-light text-lg mb-8">
+                        Every detail crafted for comfort and productivity. Our conversions transform Mercedes-Benz Sprinter chassis into private jet-style environments on wheels.
+                    </p>
+
+                    <div class="space-y-6 mb-10">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-full bg-mh-gold/10 flex items-center justify-center flex-shrink-0">
+                                <i class="fa-solid fa-chair text-mh-gold text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-serif text-lg mb-1">Maybach-Style Seating</h4>
+                                <p class="text-gray-500 text-sm">Premium leather captain's chairs with massage, heating, and reclining functions</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-full bg-mh-gold/10 flex items-center justify-center flex-shrink-0">
+                                <i class="fa-solid fa-wifi text-mh-gold text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-serif text-lg mb-1">Connectivity Suite</h4>
+                                <p class="text-gray-500 text-sm">Starlink satellite WiFi, wireless charging, and 4K displays with Apple TV</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-full bg-mh-gold/10 flex items-center justify-center flex-shrink-0">
+                                <i class="fa-solid fa-utensils text-mh-gold text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-serif text-lg mb-1">Galley & Bar</h4>
+                                <p class="text-gray-500 text-sm">Refrigerator, espresso machine, wine cooler, and premium sound system</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-full bg-mh-gold/10 flex items-center justify-center flex-shrink-0">
+                                <i class="fa-solid fa-shield-halved text-mh-gold text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-serif text-lg mb-1">Privacy & Security</h4>
+                                <p class="text-gray-500 text-sm">Tinted windows, privacy partition, and secure communications</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-4 p-6 bg-mh-dark rounded-sm border border-white/10">
+                        <div class="text-center">
+                            <span class="text-3xl font-serif text-mh-gold">24/7</span>
+                            <span class="text-gray-400 text-sm block">Chauffeur</span>
+                        </div>
+                        <div class="h-12 w-px bg-white/10"></div>
+                        <p class="text-gray-400 text-sm">Professional drivers trained in executive protection and hospitality</p>
+                    </div>
+                </div>
+
+                <div class="reveal">
+                    <img src="https://res.cloudinary.com/dg79ri9bl/image/upload/v1771383778/IMG_1063_1_coulhg.jpg" 
+                         class="w-full h-[600px] object-cover rounded-sm" 
+                         alt="Sprinter Interior">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Bar -->
+    <section id="contact" class="py-12 bg-mh-dark border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-3 gap-8 text-center stagger-children">
+                <div class="reveal">
+                    <i class="fa-solid fa-phone text-mh-gold text-2xl mb-4"></i>
+                    <h4 class="text-white font-serif text-lg mb-2">Phone</h4>
+                    <p class="text-gray-400">514-378-0154</p>
+                    <p class="text-gray-500 text-sm">24/7 Dispatch</p>
+                </div>
+                <div class="reveal">
+                    <i class="fa-solid fa-envelope text-mh-gold text-2xl mb-4"></i>
+                    <h4 class="text-white font-serif text-lg mb-2">Email</h4>
+                    <p class="text-gray-400">info@montrealhospitality.com</p>
+                    <p class="text-gray-500 text-sm">Response within 1h</p>
+                </div>
+                <div class="reveal">
+                    <i class="fa-brands fa-whatsapp text-mh-gold text-2xl mb-4"></i>
+                    <h4 class="text-white font-serif text-lg mb-2">WhatsApp</h4>
+                    <p class="text-gray-400">514-378-0154</p>
+                    <p class="text-gray-500 text-sm">Instant Booking</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black text-white pt-24 pb-12 border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-12 mb-20">
+                <div class="col-span-1 md:col-span-1">
+                    <img src="https://res.cloudinary.com/dg79ri9bl/image/upload/v1769636896/montrealhospitality_qrg2bg.png" alt="Montreal Hospitality" class="h-16 mb-8 object-contain">
+                    <p class="text-gray-500 text-sm leading-relaxed font-light">Redefining the art of the night in Montreal.</p>
+                </div>
+                <div>
+                    <h4 class="tao-subheading text-white text-[11px] mb-8 tracking-[0.2em]">Explore</h4>
+                    <ul class="space-y-4 text-sm text-gray-500 font-light">
+                        <li><a href="venues.html" target="_self" class="hover:text-mh-gold transition-colors hover:translate-x-1 inline-block transform">Venues</a></li>
+                        <li><a href="sports.html" target="_self" class="hover:text-mh-gold transition-colors hover:translate-x-1 inline-block transform">Sports</a></li>
+                        <li><a href="concierge.html" target="_self" class="hover:text-mh-gold transition-colors hover:translate-x-1 inline-block transform">Concierge</a></li>
+                        <li><a href="index.html#careers" target="_self" class="hover:text-mh-gold transition-colors hover:translate-x-1 inline-block transform">Careers</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="tao-subheading text-white text-[11px] mb-8 tracking-[0.2em]">Contact</h4>
+                    <ul class="space-y-4 text-sm text-gray-500 font-light">
+                        <li><a href="mailto:info@montrealhospitality.com" class="hover:text-mh-gold transition-colors">info@montrealhospitality.com</a></li>
+                        <li>514-378-0154</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="tao-subheading text-white text-[11px] mb-8 tracking-[0.2em]">Follow</h4>
+                    <div class="flex gap-6">
+                        <a href="https://www.instagram.com/montrealhospitality/?hl=en" target="_self" class="text-gray-500 hover:text-mh-gold transition-colors hover:scale-110 transform"><i class="fa-brands fa-instagram text-xl"></i></a>
+                        <a href="#" class="text-gray-500 hover:text-mh-gold transition-colors hover:scale-110 transform"><i class="fa-brands fa-facebook-f text-xl"></i></a>
+                        <a href="#" class="text-gray-500 hover:text-mh-gold transition-colors hover:scale-110 transform"><i class="fa-brands fa-tiktok text-xl"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-[10px] text-gray-600 uppercase tracking-widest">
+                <p>&copy; 2024 Montreal Hospitality Group</p>
+                <div class="flex gap-8 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-white transition-colors">Privacy</a>
+                    <a href="#" class="hover:text-white transition-colors">Terms</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+        window.scrollTo(0, 0);
+
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader');
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                    document.querySelectorAll('.reveal').forEach(el => el.classList.add('active'));
+                    document.querySelectorAll('.stagger-children').forEach(c => c.classList.add('active'));
+                }, 800);
+            }, 1200);
+        });
+
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+        let isMenuOpen = false;
+
+        function toggleMenu() {
+            isMenuOpen = !isMenuOpen;
+            if (isMenuOpen) {
+                mobileMenu.classList.remove('-translate-x-full');
+                mobileMenuBtn.innerHTML = '<i class="fa-solid fa-times text-xl"></i>';
+            } else {
+                mobileMenu.classList.add('-translate-x-full');
+                mobileMenuBtn.innerHTML = '<i class="fa-solid fa-bars text-xl"></i>';
+            }
+        }
+
+        mobileMenuBtn.addEventListener('click', toggleMenu);
+        mobileLinks.forEach(link => link.addEventListener('click', toggleMenu));
+    </script>
+</body>
+</html>

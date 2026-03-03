@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>55' Azimut | Charter | Montreal Hospitality</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'mh-navy': '#0B0F19',
+                        'mh-gold': '#C5A059',
+                        'mh-gold-light': '#D6B88A',
+                        'mh-dark': '#05070A',
+                        'mh-gray': '#1A1D24',
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'serif'],
+                        sans: ['"Montserrat"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { background-color: #0B0F19; color: #ffffff; overflow-x: hidden; font-family: 'Montserrat', sans-serif; }
+        .font-serif { font-family: 'Cormorant Garamond', serif; }
+        .tao-heading { font-family: 'Cormorant Garamond', serif; font-weight: 300; letter-spacing: -0.02em; }
+        .tao-subheading { font-family: 'Montserrat', sans-serif; font-weight: 400; letter-spacing: 0.2em; text-transform: uppercase; }
+        #loader { position: fixed; inset: 0; background: #0B0F19; z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.8s ease; }
+        @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+        .link-hover { position: relative; }
+        .link-hover::after { content: ''; position: absolute; width: 0; height: 1px; bottom: -4px; left: 0; background-color: #C5A059; transition: width 0.3s ease; }
+        .link-hover:hover::after { width: 100%; }
+        .btn-hover { position: relative; overflow: hidden; transition: all 0.3s ease; }
+        .btn-hover::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: left 0.5s ease; }
+        .btn-hover:hover::before { left: 100%; }
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        .spec-box { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s ease; }
+        .spec-box:hover { border-color: #C5A059; background: rgba(197, 160, 89, 0.05); }
+        .form-input { background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.3); color: white; padding: 12px 0; width: 100%; transition: border-color 0.3s ease; }
+        .form-input:focus { outline: none; border-color: #C5A059; }
+        .form-input::placeholder { color: rgba(255,255,255,0.5); }
+        #lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 9999; justify-content: center; align-items: center; }
+        #lightbox.active { display: flex; }
+        #lightbox img { max-width: 90%; max-height: 90%; object-fit: contain; }
+        .stagger-children > * { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .stagger-children.active > *:nth-child(1) { transition-delay: 0ms; opacity: 1; transform: translateY(0); }
+        .stagger-children.active > *:nth-child(2) { transition-delay: 100ms; opacity: 1; transform: translateY(0); }
+        .stagger-children.active > *:nth-child(3) { transition-delay: 200ms; opacity: 1; transform: translateY(0); }
+        .stagger-children.active > *:nth-child(4) { transition-delay: 300ms; opacity: 1; transform: translateY(0); }
+        .stagger-children.active > *:nth-child(5) { transition-delay: 400ms; opacity: 1; transform: translateY(0); }
+        .stagger-children.active > *:nth-child(6) { transition-delay: 500ms; opacity: 1; transform: translateY(0); }
+    </style>
+<base target="_self">
+</head>
+<body class="antialiased selection:bg-mh-gold selection:text-mh-navy">
+
+    <!-- Loader -->
+    <div id="loader">
+        <div class="text-center">
+            <img src="https://res.cloudinary.com/dg79ri9bl/image/upload/v1769636896/montrealhospitality_qrg2bg.png" alt="Montreal Hospitality" class="h-24 mb-6 animate-pulse object-contain mx-auto">
+            <div class="w-32 h-[1px] bg-mh-gray mx-auto overflow-hidden">
+                <div class="w-full h-full bg-mh-gold" style="animation: shimmer 1.5s infinite;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-500 py-8 px-8 lg:px-16 flex justify-between items-center text-white uppercase text-[11px] tracking-[0.2em] font-medium bg-mh-navy/90 backdrop-blur-md border-b border-white/10">
+        <button id="mobile-menu-btn" class="lg:hidden text-mh-gold z-50 hover:rotate-90 transition-transform duration-300">
+            <i class="fa-solid fa-bars text-xl"></i>
+        </button>
+        <a href="index.html" class="absolute left-1/2 transform -translate-x-1/2 lg:static lg:transform-none z-50 group">
+            <img src="https://res.cloudinary.com/dg79ri9bl/image/upload/v1769636896/montrealhospitality_qrg2bg.png" alt="Montreal Hospitality" class="h-12 object-contain">
+        </a>
+        <div class="hidden lg:flex items-center gap-12">
+            <a href="index.html" class="link-hover hover:text-mh-gold transition-colors">Home</a>
+            <a href="venues.html" class="link-hover hover:text-mh-gold transition-colors">Venues</a>
+            <a href="sports.html" class="link-hover hover:text-mh-gold transition-colors">Sports</a>
+            <a href="yatch.html" class="link-hover text-mh-gold transition-colors">Yachts</a>
+            <a href="service.html" class="link-hover hover:text-mh-gold transition-colors">Services</a>
+            <a href="event.html" class="link-hover hover:text-mh-gold transition-colors">Events</a>
+        </div>
+        <div class="hidden lg:flex items-center gap-8">
+            <a href="contact.html" class="btn-hover border border-white/30 px-6 py-2 hover:border-mh-gold hover:text-mh-gold transition-all">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed inset-0 bg-mh-navy z-40 transform -translate-x-full transition-transform duration-500 flex flex-col justify-center items-center gap-8 lg:hidden">
+        <a href="index.html" class="text-2xl font-serif text-white hover:text-mh-gold mobile-link transform hover:translate-x-2 transition-transform">Home</a>
+        <a href="venues.html" class="text-2xl font-serif text-white hover:text-mh-gold mobile-link transform hover:translate-x-2 transition-transform">Venues</a>
+        <a href="sports.html" class="text-2xl font-serif text-white hover:text-mh-gold mobile-link transform hover:translate-x-2 transition-transform">Sports</a>
+        <a href="yatch.html" class="text-2xl font-serif text-mh-gold mobile-link transform hover:translate-x-2 transition-transform">Yachts</a>
+        <a href="service.html" class="text-2xl font-serif text-white hover:text-mh-gold mobile-link transform hover:translate-x-2 transition-transform">Services</a>
+        <a href="event.html" class="text-2xl font-serif text-white hover:text-mh-gold mobile-link transform hover:translate-x-2 transition-transform">Events</a>
+    </div>
+
+    <!-- Hero Section -->
+    <header class="relative h-screen w-full overflow-hidden flex items-center justify-center">
+        <div class="absolute inset-0 z-0">
+            <img src="https://res.cloudinary.com/dg79ri9bl/image/upload/v1771468932/DJI_0870_bicu4t.jpg" alt="55' Azimut" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-b from-mh-navy/70 via-mh-navy/40 to-mh-navy"></div>
+        </div>
+        <div class="relative z-10 text-center px-6 max-w-6xl mx-auto pt-20">
+            <p class="tao-subheading text-mh-gold mb-6 tracking-[0.3em] text-xs md:text-sm reveal">Luxury Motor Yacht</p>
+            <h1 class="text-5xl md:text-7xl lg:text-9xl tao-heading text-white mb-6 leading-[0.95] reveal">55' Azimut</h1>
+            <p class="text-gray-300 max-w-2xl mx-auto font-light text-lg mb-10 reveal">A floating palace featuring six staterooms, beach club, helipad, and world-class amenities. The ultimate expression of maritime luxury.</p>
+            <div class="flex flex-wrap justify-center gap-4 reveal">
+                <a href="#specs" class="btn-hover inline-flex items-center gap-3 bg-mh-gold text-mh-navy px-10 py-4 text-xs tracking-[0.25em] uppercase hover:bg-white transition-all duration-300">Specifications <i class="fa-solid fa-arrow-down"></i></a>
+                <a href="#charter" class="btn-hover inline-flex items-center gap-3 border border-white/40 text-white px-10 py-4 text-xs tracking-[0.25em] uppercase hover:bg-white hover:text-mh-navy transition-all duration-300">Charter Now <i class="fa-solid fa-calendar-check"></i></a>
+            </div>
+        </div>
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <i class="fa-solid fa-chevron-down text-white/50 text-2xl"></i>
+        </div>
+    </header>
+
+    <!-- Quick Specs Bar -->
+    <section class="py-8 bg-mh-dark border-y border-white/10">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6 text-center stagger-children">
+                <div class="reveal"><span class="text-mh-gold text-xs tracking-widest uppercase block mb-1">Length</span><span class="text-white font-serif text-lg">55 Feet</span></div>
+                <div class="reveal"><span class="text-mh-gold text-xs tracking-widest uppercase block mb-1">Beam</span><span class="text-white font-serif text-lg">15.5 Feet</span></div>
+                <div class="reveal"><span class="text-mh-gold text-xs tracking-widest uppercase block mb-1">Guests</span><span class="text-white font-serif text-lg">12</span></div>
+                <div class="reveal"><span class="text-mh-gold text-xs tracking-widest uppercase block mb-1">Cabins</span><span class="text-white font-serif text-lg">3</span></div>
+                <div class="reveal"><span class="text-mh-gold text-xs tracking-widest uppercase block mb-1">Crew</span><span class="text-white font-serif text-lg">2</span></div>
+                <div class="reveal"><span class="text-mh-gold text-xs tracking-widest uppercase block mb-1">Year</span><span class="text-white font-serif text-lg">2022</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="py-24 bg-mh-navy">
+        <div class="max-w-[95%] mx-auto px-6">
+            <div class="text-center mb-16 reveal">
+                <span class="tao-subheading text-mh-gold text-[11px] block mb-4">Visual Tour</span>
+                <h2 class="text-4xl md:text-5xl tao-heading text-white">Gallery</h2>
+            </div>
+            <div class="grid md:grid-cols-2 gap-4 stagger-children">
+                <div class="relative aspect-[4/3] overflow-hidden cursor-pointer group" onclick="openLightbox(0)">
+                    <img src="https://res.cloudinary.com/dg79ri9bl/image/upload/v1771811595/53-1_p9zwmz.jpg" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="55' Azimut - 1">
+                    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300"></div>
+                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"><i class="fa-solid fa-expand text-white text-2xl drop-shadow-lg"></i></div>
+                </div>
+                <div class="relative aspect-[4/3] overflow-hidden cursor-pointer group" onclick="openLightbox(1)">
+                    <img src="https://res.cloudinary.com/dg79ri9bl/image/upload/v1771811599/53-17_jmcjbn.jpg" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="55' Azimut - 2">
+                    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300"></div>
+                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"><i class="fa-solid fa-expand text-white text-2xl drop-shadow-lg"></i></div>
+                </div>
+                <div class="relative aspect-[4/3] overflow-hidden cursor-pointer group" onclick="openLightbox(2)">
+                    <img src="https://res.cloudinary.com/dg79ri9bl/image/upload/v1771811666/53-11_rx3pcp.jpg" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="55' Azimut - 3">
+                    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300"></div>
+                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"><i class="fa-solid fa-expand text-white text-2xl drop-shadow-lg"></i></div>
+                </div>
+                <div class="relative aspect-[4/3] overflow-hidden cursor-pointer group" onclick="openLightbox(3)">
+                    <img src="https://res.cloudinary.com/dg79ri9bl/image/upload/v1771811596/53-4_v1c5i2.jpg" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="55' Azimut - 4">
+                    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300"></div>
+                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"><i class="fa-solid fa-expand text-white text-2xl drop-shadow-lg"></i></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Specifications Section -->
+    <section id="specs" class="py-24 bg-mh-dark relative overflow-hidden">
+        <div class="absolute inset-0 opacity-5">
+            <div class="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-mh-gold to-transparent"></div>
+            <div class="absolute top-0 right-1/3 w-px h-full bg-gradient-to-b from-transparent via-mh-gold to-transparent"></div>
+        </div>
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-16">
+                <div class="reveal">
+                    <span class="tao-subheading text-mh-gold text-[11px] block mb-4">Details</span>
+                    <h2 class="text-4xl md:text-5xl tao-heading text-white mb-8">Specifications</h2>
+                    <div class="space-y-6">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="spec-box p-6"><span class="text-mh-gold text-xs tracking-widest uppercase block mb-2">Length Overall</span><span class="text-white font-serif text-2xl">55 Feet</span></div>
+                            <div class="spec-box p-6"><span class="text-mh-gold text-xs tracking-widest uppercase block mb-2">Beam</span><span class="text-white font-serif text-2xl">15.5 Feet</span></div>
+                            <div class="spec-box p-6"><span class="text-mh-gold text-xs tracking-widest uppercase block mb-2">Draft</span><span class="text-white font-serif text-2xl">4.2 Feet</span></div>
+                            <div class="spec-box p-6"><span class="text-mh-gold text-xs tracking-widest uppercase block mb-2">Max Speed</span><span class="text-white font-serif text-2xl">32 Knots</span></div>
+                            <div class="spec-box p-6"><span class="text-mh-gold text-xs tracking-widest uppercase block mb-2">Guest Capacity</span><span class="text-white font-serif text-2xl">12 Guests</span></div>
+                            <div class="spec-box p-6"><span class="text-mh-gold text-xs tracking-widest uppercase block mb-2">Crew</span><span class="text-white font-serif text-2xl">2</span></div>
+                            <div class="spec-box p-6"><span class="text-mh-gold text-xs tracking-widest uppercase block mb-2">Cabins</span><span class="text-white font-serif text-2xl">3</span></div>
+                            <div class="spec-box p-6"><span class="text-mh-gold text-xs tracking-widest uppercase block mb-2">Year Built</span><span class="text-white font-serif text-2xl">2022</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="reveal">
+                    <span class="tao-subheading text-mh-gold text-[11px] block mb-4">Features</span>
+                    <h2 class="text-4xl md:text-5xl tao-heading text-white mb-8">Highlights</h2>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-4 p-4 bg-mh-dark/50 rounded-sm border border-white/5 hover:border-mh-gold/30 transition-all"><div class="w-8 h-8 rounded-full bg-mh-gold/10 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-star text-mh-gold text-xs"></i></div><span class="text-gray-300 text-sm">Master suite with private terrace</span></div>
+                        <div class="flex items-start gap-4 p-4 bg-mh-dark/50 rounded-sm border border-white/5 hover:border-mh-gold/30 transition-all"><div class="w-8 h-8 rounded-full bg-mh-gold/10 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-star text-mh-gold text-xs"></i></div><span class="text-gray-300 text-sm">Beach club with hydraulic platform</span></div>
+                        <div class="flex items-start gap-4 p-4 bg-mh-dark/50 rounded-sm border border-white/5 hover:border-mh-gold/30 transition-all"><div class="w-8 h-8 rounded-full bg-mh-gold/10 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-star text-mh-gold text-xs"></i></div><span class="text-gray-300 text-sm">Helipad for direct access</span></div>
+                        <div class="flex items-start gap-4 p-4 bg-mh-dark/50 rounded-sm border border-white/5 hover:border-mh-gold/30 transition-all"><div class="w-8 h-8 rounded-full bg-mh-gold/10 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-star text-mh-gold text-xs"></i></div><span class="text-gray-300 text-sm">Cinema room with 4K projection</span></div>
+                        <div class="flex items-start gap-4 p-4 bg-mh-dark/50 rounded-sm border border-white/5 hover:border-mh-gold/30 transition-all"><div class="w-8 h-8 rounded-full bg-mh-gold/10 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-star text-mh-gold text-xs"></i></div><span class="text-gray-300 text-sm">Wellness center with sauna</span></div>
+                    </div>
+                    <div class="mt-10 p-6 bg-mh-navy rounded-sm border border-white/10">
+                        <h4 class="text-white font-serif text-xl mb-4">Charter Includes</h4>
+                        <ul class="space-y-2 text-gray-400 text-sm">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-mh-gold"></i> Professional captain and crew</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-mh-gold"></i> Premium beverages and catering</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-mh-gold"></i> Water toys and equipment</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-mh-gold"></i> Fuel for local cruising</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-mh-gold"></i> Port fees and taxes</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Charter Form Section -->
+    <section id="charter" class="py-24 bg-mh-navy relative overflow-hidden">
+        <div class="absolute inset-0 opacity-5">
+            <div class="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-mh-gold to-transparent"></div>
+        </div>
+        <div class="max-w-4xl mx-auto px-6 relative z-10">
+            <div class="text-center mb-16 reveal">
+                <span class="tao-subheading text-mh-gold text-[11px] block mb-4">Reservation</span>
+                <h2 class="text-4xl md:text-5xl tao-heading text-white mb-6">Charter This Yacht</h2>
+                <p class="text-gray-400 font-light text-lg">Complete the form below and our charter team will confirm availability within 24 hours.</p>
+            </div>
+            <form class="space-y-8 reveal" onsubmit="event.preventDefault(); alert('Thank you for your charter request for the 55\' Azimut! Our team will contact you within 24 hours.');">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div><label class="block text-xs tracking-[0.2em] uppercase text-gray-400 mb-2">First Name</label><input type="text" class="form-input" placeholder="John" required></div>
+                    <div><label class="block text-xs tracking-[0.2em] uppercase text-gray-400 mb-2">Last Name</label><input type="text" class="form-input" placeholder="Doe" required></div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div><label class="block text-xs tracking-[0.2em] uppercase text-gray-400 mb-2">Email</label><input type="email" class="form-input" placeholder="john@example.com" required></div>
+                    <div><label class="block text-xs tracking-[0.2em] uppercase text-gray-400 mb-2">Phone</label><input type="tel" class="form-input" placeholder="514-378-0154" required></div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div><label class="block text-xs tracking-[0.2em] uppercase text-gray-400 mb-2">Charter Date</label><input type="date" class="form-input" required></div>
+                    <div><label class="block text-xs tracking-[0.2em] uppercase text-gray-400 mb-2">Duration (Days)</label><input type="number" min="1" max="14" class="form-input" placeholder="1" required></div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div><label class="block text-xs tracking-[0.2em] uppercase text-gray-400 mb-2">Number of Guests</label><input type="number" min="1" max="12" class="form-input" placeholder="Max 12" required></div>
+                    <div><label class="block text-xs tracking-[0.2em] uppercase text-gray-400 mb-2">Embarkation Port</label><input type="text" class="form-input" placeholder="Montreal" required></div>
+                </div>
+                <div><label class="block text-xs tracking-[0.2em] uppercase text-gray-400 mb-2">Special Requests</label><textarea class="form-input resize-none" rows="4" placeholder="Dietary requirements, celebration details, preferred itinerary..."></textarea></div>
+                <div class="text-center">
+                    <button type="submit" class="btn-hover inline-flex items-center gap-3 bg-mh-gold text-mh-navy px-12 py-4 text-xs tracking-[0.25em] uppercase hover:bg-white transition-all duration-300">Request Charter <i class="fa-solid fa-paper-plane"></i></button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Navigation to Other Yachts -->
+    <section class="py-16 bg-mh-dark border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-12 reveal">
+                <span class="tao-subheading text-mh-gold text-[11px] block mb-4">Explore</span>
+                <h3 class="text-2xl tao-heading text-white">View Other Yachts</h3>
+            </div>
+            <div class="flex flex-wrap justify-center gap-4 reveal">
+                <a href="yacht-50-azimut.html" class="px-6 py-3 border border-white/20 text-white hover:border-mh-gold hover:text-mh-gold transition-all text-xs tracking-widest uppercase">50' Azimut</a>
+                <a href="yacht-49-azimut.html" class="px-6 py-3 border border-white/20 text-white hover:border-mh-gold hover:text-mh-gold transition-all text-xs tracking-widest uppercase">49' Azimut</a>
+                <a href="yacht-44-searay.html" class="px-6 py-3 border border-white/20 text-white hover:border-mh-gold hover:text-mh-gold transition-all text-xs tracking-widest uppercase">44' Sea Ray</a>
+                <a href="yacht-42-prestige.html" class="px-6 py-3 border border-white/20 text-white hover:border-mh-gold hover:text-mh-gold transition-all text-xs tracking-widest uppercase">42' Prestige</a>
+                <a href="yacht-42-regal.html" class="px-6 py-3 border border-white/20 text-white hover:border-mh-gold hover:text-mh-gold transition-all text-xs tracking-widest uppercase">42' Regal</a>
+                <a href="yacht-40-cruiser.html" class="px-6 py-3 border border-white/20 text-white hover:border-mh-gold hover:text-mh-gold transition-all text-xs tracking-widest uppercase">40' Cruiser</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black text-white pt-24 pb-12 border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-12 mb-20">
+                <div class="col-span-1 md:col-span-1">
+                    <img src="https://res.cloudinary.com/dg79ri9bl/image/upload/v1769636896/montrealhospitality_qrg2bg.png" alt="Montreal Hospitality" class="h-16 mb-8 object-contain">
+                    <p class="text-gray-500 text-sm leading-relaxed font-light">Redefining the art of the night in Montreal.</p>
+                </div>
+                <div>
+                    <h4 class="tao-subheading text-white text-[11px] mb-8 tracking-[0.2em]">Explore</h4>
+                    <ul class="space-y-4 text-sm text-gray-500 font-light">
+                        <li><a href="venues.html" class="hover:text-mh-gold transition-colors hover:translate-x-1 inline-block transform">Venues</a></li>
+                        <li><a href="sports.html" class="hover:text-mh-gold transition-colors hover:translate-x-1 inline-block transform">Sports</a></li>
+                        <li><a href="yatch.html" class="hover:text-mh-gold transition-colors hover:translate-x-1 inline-block transform">Yachts</a></li>
+                        <li><a href="index.html#careers" class="hover:text-mh-gold transition-colors hover:translate-x-1 inline-block transform">Careers</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="tao-subheading text-white text-[11px] mb-8 tracking-[0.2em]">Contact</h4>
+                    <ul class="space-y-4 text-sm text-gray-500 font-light">
+                        <li><a href="mailto:info@montrealhospitality.com" class="hover:text-mh-gold transition-colors">info@montrealhospitality.com</a></li>
+                        <li>514-378-0154</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="tao-subheading text-white text-[11px] mb-8 tracking-[0.2em]">Follow</h4>
+                    <div class="flex gap-6">
+                        <a href="https://www.instagram.com/montrealhospitality/?hl=en" class="text-gray-500 hover:text-mh-gold transition-colors hover:scale-110 transform"><i class="fa-brands fa-instagram text-xl"></i></a>
+                        <a href="#" class="text-gray-500 hover:text-mh-gold transition-colors hover:scale-110 transform"><i class="fa-brands fa-facebook-f text-xl"></i></a>
+                        <a href="#" class="text-gray-500 hover:text-mh-gold transition-colors hover:scale-110 transform"><i class="fa-brands fa-tiktok text-xl"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-[10px] text-gray-600 uppercase tracking-widest">
+                <p>&copy; 2024 Montreal Hospitality Group</p>
+                <div class="flex gap-8 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-white transition-colors">Privacy</a>
+                    <a href="#" class="hover:text-white transition-colors">Terms</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Lightbox -->
+    <div id="lightbox" onclick="closeLightbox()">
+        <button class="absolute top-6 right-6 text-white text-3xl hover:text-mh-gold transition-colors z-50" onclick="closeLightbox()"><i class="fa-solid fa-times"></i></button>
+        <button class="absolute left-6 top-1/2 transform -translate-y-1/2 text-white text-3xl hover:text-mh-gold transition-colors z-50" onclick="event.stopPropagation(); changeImage(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+        <button class="absolute right-6 top-1/2 transform -translate-y-1/2 text-white text-3xl hover:text-mh-gold transition-colors z-50" onclick="event.stopPropagation(); changeImage(1)"><i class="fa-solid fa-chevron-right"></i></button>
+        <img id="lightbox-img" src="" alt="Gallery Image">
+    </div>
+
+    <script>
+        if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
+        window.scrollTo(0, 0);
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader');
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                    document.querySelectorAll('.reveal').forEach(el => el.classList.add('active'));
+                    document.querySelectorAll('.stagger-children').forEach(container => container.classList.add('active'));
+                }, 800);
+            }, 1200);
+        });
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        let isMenuOpen = false;
+        function toggleMenu() {
+            isMenuOpen = !isMenuOpen;
+            if (isMenuOpen) {
+                mobileMenu.classList.remove('-translate-x-full');
+                mobileMenuBtn.innerHTML = '<i class="fa-solid fa-times text-xl"></i>';
+            } else {
+                mobileMenu.classList.add('-translate-x-full');
+                mobileMenuBtn.innerHTML = '<i class="fa-solid fa-bars text-xl"></i>';
+            }
+        }
+        mobileMenuBtn.addEventListener('click', toggleMenu);
+        document.querySelectorAll('.mobile-link').forEach(link => link.addEventListener('click', toggleMenu));
+        const galleryImages = ["https://res.cloudinary.com/dg79ri9bl/image/upload/v1771468932/DJI_0870_bicu4t.jpg", "https://caboplatinum.com/wp-content/uploads/2023/07/55-ft_Azimut_main-cabin.jpg", "https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?q=80&w=2070&auto=format&fit=crop", "https://images.unsplash.com/photo-1605281317010-fe5ffe79ba66?q=80&w=2070&auto=format&fit=crop"];
+        let currentImageIndex = 0;
+        function openLightbox(index) {
+            currentImageIndex = index;
+            document.getElementById('lightbox-img').src = galleryImages[index];
+            document.getElementById('lightbox').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+        function changeImage(direction) {
+            currentImageIndex += direction;
+            if (currentImageIndex < 0) currentImageIndex = galleryImages.length - 1;
+            if (currentImageIndex >= galleryImages.length) currentImageIndex = 0;
+            document.getElementById('lightbox-img').src = galleryImages[currentImageIndex];
+        }
+        document.addEventListener('keydown', (e) => {
+            if (!document.getElementById('lightbox').classList.contains('active')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowLeft') changeImage(-1);
+            if (e.key === 'ArrowRight') changeImage(1);
+        });
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
